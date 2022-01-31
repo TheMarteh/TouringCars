@@ -289,6 +289,32 @@ public class Program
 
     public static void Main()
     {
+        // setting and running the testcars
+        Car[] testerCars = new Car[WorkingParams.testCars];
+        for (int i = 0; i < WorkingParams.testCars; i++)
+        {
+            // populating the test route with random points. Each test car gets their own route
+            PointOfInterest[] testPoints = new PointOfInterest[WorkingParams.wayPoints];
+            for (int j = 0; j < WorkingParams.wayPoints; j++)
+            {
+                testPoints[j] = new PointOfInterest("Testpunt " + j);
+            }
+
+            // setting up route and creating the car instance
+            Route testTour = new Route(testPoints);
+            testerCars[i] = new Car($"Testauto #{i}") { route = testTour };
+
+            // starting the drive
+            testerCars[i].getIn(testerCars[i].owner);
+            testerCars[i].go();
+        }
+
+        // printing a summary of all the testCars
+        foreach (Car car in testerCars)
+        {
+            car.printSummary();
+        }
+
         // manually entered waypoints with specified type and location
         PointOfInterest p1 = new PointOfInterest("Benzinepomp", 46, POIType.gas_station);
         PointOfInterest p2 = new PointOfInterest("McDonalds", 88, POIType.food);
@@ -318,34 +344,10 @@ public class Program
         driveTillTheSun.getIn("Pietje");
         driveTillTheSun.go();
 
-
-        // setting and running the testcars
-        Car[] testerCars = new Car[WorkingParams.testCars];
-        for (int i = 0; i < WorkingParams.testCars; i++)
-        {
-            // populating the test route with random points. Each test car gets their own route
-            PointOfInterest[] testPoints = new PointOfInterest[WorkingParams.wayPoints];
-            for (int j = 0; j < WorkingParams.wayPoints; j++)
-            {
-                testPoints[j] = new PointOfInterest("Testpunt " + j);
-            }
-
-            // setting up route and creating the car instance
-            Route testTour = new Route(testPoints);
-            testerCars[i] = new Car($"Testauto #{i}") { route = testTour };
-
-            // starting the drive
-            testerCars[i].getIn(testerCars[i].owner);
-            testerCars[i].go();
-        }
-
-        // printing a summary of all the testCars
-        foreach (Car car in testerCars)
-        {
-            car.printSummary();
-        }
+        // printing summaries
         tester.printSummary();
         driveTillTheSun.printSummary();
+
         // debug line
         Console.WriteLine();
     }
