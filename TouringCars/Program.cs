@@ -69,7 +69,7 @@ namespace TouringCars
             // printing summaries
             outputLog += tester.printSummary();
             outputLog += driveTillTheSun.printSummary();
-            outputLog += Analyzer.AvgSpeedPerBrand(testerCars);
+            outputLog += Analyzer.avgSpeedResults(testerCars);
 
             Console.WriteLine(outputLog);
 
