@@ -71,10 +71,7 @@ namespace TouringCarsTests
             c2.getIn("Tester");
             Tuple<Automerken, int>[] result = Analyzer.AvgSpeedPerBrand(new Car[] { c1, c2 });
             Tuple<Automerken, int> wantedResult = Tuple.Create(Automerken.Audi, 2);
-            Console.WriteLine(result[0]);
-            Console.WriteLine(wantedResult);
-
-            Assert.IsTrue(result[0] == wantedResult, "Average Speed calculated incorrectly");
+            Assert.IsTrue(result[0].ToString() == wantedResult.ToString() && result[0].Item2 == result[0].Item2, "Average Speed calculated incorrectly");
         }
     }
 
