@@ -177,20 +177,6 @@ namespace TouringCars
             return this.getFuel();
         }
 
-        public bool checkFuel()
-        {
-            if (this.fuel > 10)
-            {
-                // no need to refuel
-                return false;
-            }
-            else
-            {
-                // we need to refuel
-                return true;
-            }
-        }
-
         public String printSummary()
         {
             // returns basic car information and a summary of the trip (so far)
