@@ -263,7 +263,7 @@ public class Car
                             break;
                         case POIType.gas_station:
                             Console.WriteLine($"Arrived at waypoint {next.name} at {next.location}km!\nFuel left: {this.fuel}");
-                            this.checkFuel();
+                            this.addFuel();
                             break;
                         case POIType.food:
                             Console.WriteLine($"Arrived at waypoint {next.name} at {next.location}km!\nFuel left: {this.fuel}");
@@ -352,20 +352,34 @@ public class Car
         }
     }
 
-    public void checkFuel()
+    public int addFuel()
     {
+        // can't add fuel if the car is locked
         if (!this.locked)
         {
-            if (this.fuel > 10)
+            if (this.checkFuel())
             {
-                Console.WriteLine($"You\'re still good!\nOff you go, with {fuel} liters left!");
-            }
-            else
-            {
-                Console.WriteLine("We need to tank");
+                // add fuel if needed
                 this.fuel += 15;
                 Console.WriteLine("Done, you can now drive some more! " + fuel + " liters left");
             }
+            Console.WriteLine($"You\'re still good!\nOff you go, with {fuel} liters left!");
+        }
+        // return the fuel amount
+        return this.getFuel();
+    }
+
+    public bool checkFuel()
+    {
+        if (this.fuel > 10)
+        {
+            // no need to refuel
+            return false;
+        }
+        else
+        {
+            // we need to refuel
+            return true;
         }
     }
 
