@@ -59,5 +59,16 @@ namespace TouringCarsTests
         }
 
     }
+    [TestClass]
+    public class AnalyzerTests
+    {
+        [TestMethod]
+        public void AveragePerBrandTest()
+        {
+            String result = "";
+            String wantedResult = "";
+            Assert.IsTrue(result == wantedResult, "Average Speed calculated incorrectly");
+        }
+    }
 
 }
