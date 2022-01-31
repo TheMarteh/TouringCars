@@ -246,6 +246,7 @@ public class Program
         }
 
         private bool checkLock()
+        // returns true if the car is locked, returns false if the car is unlocked
         {
             if (!this.locked)
             {
@@ -275,20 +276,23 @@ public class Program
             }
         }
 
-        public void printSummary()
+        public String printSummary()
         {
             String carSummary = $"{this.owner}'s auto ({this.brand}):";
             while (carSummary.Length < 35)
             {
                 carSummary += " ";
             }
-            Console.WriteLine($"{carSummary} {this.route.atWaypointNumber} van de {this.route.getLength().Item1} ({this.kmDriven} / {this.route.getLength().Item2} km)");
+            return $"{carSummary} {this.route.atWaypointNumber} van de {this.route.getLength().Item1} ({this.kmDriven} / {this.route.getLength().Item2} km)\n";
         }
     }
 
 
     public static void Main()
     {
+        // initializing outputlog
+        String outputLog = "";
+
         // setting and running the testcars
         Car[] testerCars = new Car[WorkingParams.testCars];
         for (int i = 0; i < WorkingParams.testCars; i++)
@@ -312,7 +316,7 @@ public class Program
         // printing a summary of all the testCars
         foreach (Car car in testerCars)
         {
-            car.printSummary();
+            outputLog += car.printSummary();
         }
 
         // manually entered waypoints with specified type and location
@@ -345,8 +349,9 @@ public class Program
         driveTillTheSun.go();
 
         // printing summaries
-        tester.printSummary();
-        driveTillTheSun.printSummary();
+        outputLog += tester.printSummary();
+        outputLog += driveTillTheSun.printSummary();
+        Console.WriteLine(outputLog);
 
         // debug line
         Console.WriteLine();
@@ -355,9 +360,9 @@ public class Program
 
 public class WorkingParams
 {
-    public static int testCars = 10;
+    public static int testCars = 50;
     public static int wayPoints = 20;
-    public static int maxDistance = 200;
+    public static int maxDistance = 250;
     public static int startingFuel = 20;
 }
 
