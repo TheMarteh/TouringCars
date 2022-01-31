@@ -243,7 +243,7 @@ public class Car
     public void go()
     {
         Console.WriteLine($"{this.owner} is starting the tour..");
-        if (checkLock())
+        if (!checkLock())
         {
             while (!route.hasFinished)
             {
@@ -297,7 +297,7 @@ public class Car
 
     public void drive()
     {
-        if (!this.locked && !this.route.hasFinished)
+        if (!this.locked && !this.route.hasFinished && this.fuel > 0)
         {
             Random rnd = new Random();
             switch (this.brand)
@@ -338,10 +338,10 @@ public class Car
         }
     }
 
-    private bool checkLock()
+    public bool checkLock()
     // returns true if the car is locked, returns false if the car is unlocked
     {
-        if (!this.locked)
+        if (this.locked)
         {
             return true;
         }
