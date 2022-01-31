@@ -212,12 +212,14 @@ namespace TouringCars
 
         private int kmDriven;
         private int fuel;
+        private int maxFuel;
         private bool locked;
 
         public Car(String owner)
         {
             this.owner = owner;
             this.kmDriven = 0;
+            this.maxFuel = FixedParams.maxCarFuel;
             this.fuel = WorkingParams.startingFuel;
             this.locked = true;
             this.brand = (Automerken)new Random().Next(0, Enum.GetNames(typeof(Automerken)).Length);
@@ -361,10 +363,16 @@ namespace TouringCars
             // can't add fuel if the car is locked
             if (!this.locked)
             {
-                if (this.checkFuel())
+                if (this.fuel < maxFuel / 2)
                 {
-                    // add fuel if needed
-                    this.fuel += amount;
+                    if ((this.fuel + amount >= maxFuel))
+                    {
+                        this.fuel = maxFuel;
+                    }
+                    else
+                    {
+                        this.fuel += amount;
+                    }
                     Console.WriteLine("Done, you can now drive some more! " + fuel + " liters left");
                 }
                 Console.WriteLine($"You\'re still good!\nOff you go, with {fuel} liters left!");
@@ -389,21 +397,34 @@ namespace TouringCars
 
         public String printSummary()
         {
+            // returns basic car information and a summary of the trip (so far)
+            // Testauto #8's auto (Audi):          6 van de 20 (60 / 225 km)
             String carSummary = $"{this.owner}'s auto ({this.brand}):";
+            String routeSummary = $"{this.route.atWaypointNumber} van de {this.route.getLength().Item1} ({this.kmDriven} / {this.route.getLength().Item2} km)";
             while (carSummary.Length < 35)
             {
                 carSummary += " ";
             }
-            return $"{carSummary} {this.route.atWaypointNumber} van de {this.route.getLength().Item1} ({this.kmDriven} / {this.route.getLength().Item2} km)\n";
+            return $"{carSummary} {routeSummary}\n";
         }
     }
 
     public class WorkingParams
     {
-        public static int testCars = 50;
+        // determines the amount of cars should run in the simulation
+        public static int testCars = 10;
+        // the amount of randomly generated waypoints
         public static int wayPoints = 20;
+        // the maximum distance a randomly generated waypoint is away from 0
         public static int maxDistance = 250;
+        // the amount of fuel a car starts with by default
         public static int startingFuel = 20;
+    }
+
+    public class FixedParams
+    {
+        // the default fuel tank size of a car
+        public static int maxCarFuel = 50;
     }
 
     class NotUsed

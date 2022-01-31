@@ -49,6 +49,15 @@ namespace TouringCarsTests
             Assert.IsTrue(auto.checkLock(), "Car can\'t be opened by the wrong person");
         }
 
+        [TestMethod]
+        public void refuel()
+        {
+            Car auto = new Car(name);
+            auto.getIn(name);
+            auto.addFuel(10);
+            Assert.IsTrue(auto.getFuel() == (WorkingParams.startingFuel + 10), "Fuel adding test has gone wrong, or you should start with less fuel");
+        }
+
     }
 
 }
