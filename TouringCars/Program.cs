@@ -19,7 +19,7 @@ namespace TouringCars
                 PointOfInterest[] testPoints = new PointOfInterest[WorkingParams.wayPoints];
                 for (int j = 0; j < WorkingParams.wayPoints; j++)
                 {
-                    testPoints[j] = new PointOfInterest("Testpunt " + j);
+                    testPoints[j] = new PointOfInterest("Testpunt " + j, value: 15, cost: 10);
                 }
 
                 // setting up route and creating the car instance
@@ -69,6 +69,8 @@ namespace TouringCars
             // printing summaries
             outputLog += tester.printSummary();
             outputLog += driveTillTheSun.printSummary();
+            outputLog += Analyzer.AvgSpeedPerBrand(testerCars);
+
             Console.WriteLine(outputLog);
 
             // debug line
