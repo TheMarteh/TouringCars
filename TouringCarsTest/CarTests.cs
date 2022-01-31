@@ -65,8 +65,8 @@ namespace TouringCarsTests
         [TestMethod]
         public void AveragePerBrandTest()
         {
-            Car c1 = new Car("Sid", Automerken.Ferrari);
-            Car c2 = new Car("Tester", Automerken.Ferrari);
+            Car c1 = new Car("Sid", Automerken.Audi);
+            Car c2 = new Car("Tester", Automerken.Audi);
             c1.getIn("Sid");
             c2.getIn("Tester");
             Tuple<Automerken, int>[] result = Analyzer.AvgSpeedPerBrand(new Car[] { c1, c2 });
