@@ -63,6 +63,7 @@ public class Program
 
         public Tuple<int, int> getLength()
         {
+            // returns the total amount of waypoints and the location of the final waypoint
             return new Tuple<int, int>(waypoints.Count(), waypoints.Last().Item1.location);
         }
 
@@ -73,6 +74,7 @@ public class Program
 
         public PointOfInterest getNextPoint()
         {
+            // if there are any more waypoints left in the route, return the next waypoint. else, return a terminator waypoint
             if (this.atWaypointNumber < this.waypoints.Count())
             {
                 return this.waypoints[atWaypointNumber].Item1;
@@ -84,8 +86,11 @@ public class Program
 
         private Tuple<PointOfInterest, bool>[] planRoute(PointOfInterest[] points)
         {
-            // PointOfInterest[] sortedPoints = new PointOfInterest[points.Count()];
+            // initializing the final list as a Tuple<PointOfInterest, bool> array
             Tuple<PointOfInterest, bool>[] sortedPoints = new Tuple<PointOfInterest, bool>[points.Count()];
+
+            // sorting the points based on distance to 0 ascending 
+            // bubble sort
             PointOfInterest temp;
             for (int j = 0; j <= points.Length - 2; j++)
             {
@@ -99,13 +104,14 @@ public class Program
                     }
                 }
             }
+
+            // converting PointOfInterest[] to Tuple<PointOfInterest, bool>[]
             for (int i = 0; i < points.Count(); i++)
             {
                 sortedPoints[i] = Tuple.Create(points[i], false);
             }
             return sortedPoints;
         }
-
         public void getStranded()
         {
             this.hasFinished = true;
