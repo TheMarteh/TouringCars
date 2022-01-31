@@ -65,9 +65,16 @@ namespace TouringCarsTests
         [TestMethod]
         public void AveragePerBrandTest()
         {
-            String result = "";
-            String wantedResult = "";
-            Assert.IsTrue(result == wantedResult, "Average Speed calculated incorrectly");
+            Car c1 = new Car("Sid", Automerken.Ferrari);
+            Car c2 = new Car("Tester", Automerken.Ferrari);
+            c1.getIn("Sid");
+            c2.getIn("Tester");
+            Tuple<Automerken, int>[] result = Analyzer.AvgSpeedPerBrand(new Car[] { c1, c2 });
+            Tuple<Automerken, int> wantedResult = Tuple.Create(Automerken.Audi, 2);
+            Console.WriteLine(result[0]);
+            Console.WriteLine(wantedResult);
+
+            Assert.IsTrue(result[0] == wantedResult, "Average Speed calculated incorrectly");
         }
     }
 
