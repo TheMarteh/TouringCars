@@ -5,7 +5,7 @@ namespace TouringCars
         // determines whether to add the testercar outputs to the outputlog
         public static bool showOutput = true;
         // determines the amount of cars should run in the simulation
-        public static int testCars = 100;
+        public static int testCars = 1;
         // the amount of randomly generated waypoints
         public static int wayPoints = 100;
         // the amount of used waypoints for a route

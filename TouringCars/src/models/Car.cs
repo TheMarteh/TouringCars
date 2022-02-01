@@ -52,9 +52,10 @@ namespace TouringCars
             {
                 while (!route.hasFinished)
                 {
+                    System.Console.WriteLine("Get next Point");
                     var next = route.getNextPoint();
                     int distanceToNext = next.Item2;
-                    while (distanceToNext > 0 && !this.route.hasFinished)
+                    while (distanceToNext > 0 && !this.route.hasFinished && fuel > 0)
                     {
                         var res = this.drive();
                         distanceToNext -= res.Item2;
@@ -84,6 +85,12 @@ namespace TouringCars
                                 break;
                         }
                         // Thread.Sleep(1000);
+                    }
+                    if (this.fuel <= 0)
+                    {
+                        System.Console.WriteLine("Get stranded!!!");
+                        result += this.route.getStranded();
+                        // break;
                     }
                 }
                 result += "We\'re done, getting out of the car..\n\n";
@@ -138,10 +145,6 @@ namespace TouringCars
                         distanceDriven += new Random().Next(1, 8);
                         this.fuel -= new Random().Next(1, 4);
                         break;
-                }
-                if (this.fuel <= 0)
-                {
-                    result += this.route.getStranded();
                 }
             }
             this.kmDriven += distanceDriven;

@@ -66,8 +66,11 @@ namespace TouringCars
             foreach (Car car in cars)
             {
                 // starting the drive
+                System.Console.WriteLine("Getting in");
                 this.output += car.getIn(car.owner, showOutput);
+                System.Console.WriteLine("Starting trip");
                 this.output += car.go(showOutput);
+                System.Console.WriteLine("Printing results");
                 this.output += car.printSummary(showOutput);
             }
         }

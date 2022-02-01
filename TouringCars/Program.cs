@@ -13,8 +13,10 @@ namespace TouringCars
             String outputLog = "";
 
             // setting and running the testcars
-            TesterCars testcars = new TesterCars(50, 1, 1);
-            testcars.go(showOutput: false);
+            TesterCars testcars = new TesterCars();
+            testcars.go(showOutput: true);
+
+            System.Console.WriteLine("Keep going in program");
 
             // manually entered waypoints with specified type and location
             PointOfInterest p1 = new PointOfInterest("Benzinepomp", new int[] { 46, 23 }, POIType.gas_station);
