@@ -17,7 +17,7 @@ namespace TouringCars
             testcars.go(WorkingParams.showOutput);
 
             // create log entries
-            outputLog += testcars.getOutput();
+            outputLog += testcars.getOutput(FixedParams.createLogFile);
 
             // manually entered waypoints with specified type and location
             PointOfInterest p1 = new PointOfInterest("Benzinepomp", new int[] { 46, 23 }, POIType.gas_station);
@@ -49,8 +49,9 @@ namespace TouringCars
             driveTillTheSun.go();
 
             // printing summaries
-            outputLog += tester.printSummary();
-            outputLog += driveTillTheSun.printSummary();
+            outputLog += tester.printSummary(FixedParams.createLogFile);
+            outputLog += driveTillTheSun.printSummary(FixedParams.createLogFile);
+
 
             a.setCars(testcars.getCars());
             outputLog += a.avgSpeedResults();

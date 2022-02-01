@@ -190,16 +190,24 @@ namespace TouringCars
 
         public String printSummary(Boolean addToLog = true)
         {
-            // returns basic car information and a summary of the trip (so far)
-            // Testauto #8's auto (Audi):          6 van de 20 (60 / 225 km)
-            String carSummary = $"{this.owner}'s auto ({this.brand}):";
-            String routeSummary = $"{this.route.atWaypointNumber} van de {this.route.getLength().Item1} ({this.kmDriven} / {this.route.getLength().Item2} km)";
-            while (carSummary.Length < 35)
+            if (addToLog)
             {
-                carSummary += " ";
+                // returns basic car information and a summary of the trip (so far)
+                // Testauto #8's auto (Audi):          6 van de 20 (60 / 225 km)
+                String carSummary = $"{this.owner}'s auto ({this.brand}):";
+                String routeSummary = $"{this.route.atWaypointNumber} van de {this.route.getLength().Item1} ({this.kmDriven} / {this.route.getLength().Item2} km)";
+                while (carSummary.Length < 35)
+                {
+                    carSummary += " ";
+                }
+                return $"{carSummary} {routeSummary}\n";
             }
-            return $"{carSummary} {routeSummary}\n";
+            else
+            {
+                return "";
+            }
         }
+
     }
 
 }

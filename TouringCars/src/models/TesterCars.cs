@@ -59,9 +59,9 @@ namespace TouringCars
         {
             return this.cars;
         }
-        public String getOutput()
+        public String getOutput(Boolean AddToLog)
         {
-            if (FixedParams.createLogFile)
+            if (AddToLog)
             {
                 foreach (Car car in cars)
                 {
@@ -69,7 +69,10 @@ namespace TouringCars
                 }
                 return this.output;
             }
-            else { return ""; }
+            else
+            {
+                return "";
+            }
         }
     }
 }
