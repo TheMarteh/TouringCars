@@ -44,7 +44,7 @@ namespace TouringCars
 
         public void go()
         {
-            Console.WriteLine($"{this.owner} is starting the tour..");
+            Console.Write($"{this.owner} is starting the tour..\n");
             if (!checkLock())
             {
                 while (!route.hasFinished)
@@ -61,43 +61,43 @@ namespace TouringCars
                         switch (next.Item1.type)
                         {
                             case POIType.start:
-                                Console.WriteLine("Let\'s go!");
+                                Console.Write("Start: Let\'s go!");
                                 break;
                             case POIType.terminator:
-                                Console.WriteLine("You've finished!");
+                                Console.Write("You've finished!");
                                 route.finish();
                                 break;
                             case POIType.gas_station:
-                                Console.WriteLine($"Arrived at waypoint {next.Item1.name} at {next.Item2}km!\nFuel left: {this.fuel}");
+                                Console.Write($"Arrived at waypoint {next.Item1.name} at {next.Item2}km!\nFuel left: {this.fuel}\n");
                                 this.addFuel(next.Item1.value);
                                 break;
                             case POIType.food:
-                                Console.WriteLine($"Arrived at waypoint {next.Item1.name} at {next.Item2}km!\nFuel left: {this.fuel}");
-                                Console.WriteLine("Nom nom, lekker eten");
+                                Console.Write($"Arrived at waypoint {next.Item1.name} at {next.Item2}km!\nFuel left: {this.fuel}\n");
+                                Console.Write("Nom nom, lekker eten");
                                 break;
                             default:
-                                Console.WriteLine($"Arrived at waypoint {next.Item1.name} at {next.Item2}km!\nFuel left: {this.fuel}");
+                                Console.Write($"Arrived at waypoint {next.Item1.name} at {next.Item2}km!\nFuel left: {this.fuel}\n");
                                 break;
                         }
                         // Thread.Sleep(1000);
                     }
                 }
-                Console.WriteLine("We\'re done, getting out of the car..\n");
+                Console.Write("We\'re done, getting out of the car..\n");
                 this.locked = true;
             }
         }
 
-        public void getIn(String name)
+        public String getIn(String name)
         {
-            Console.WriteLine($"Person {name} is trying to get into the car of {this.owner}");
+            Console.Write($"Person {name} is trying to get into the car of {this.owner}\n");
             if (name == this.owner)
             {
-                Console.WriteLine("    The car is now unlocked!");
                 this.locked = false;
+                return ("    The car is now unlocked!");
             }
             else
             {
-                Console.WriteLine("    The car doesn't open..");
+                return ("    The car doesn't open..");
             }
         }
 
@@ -110,34 +110,34 @@ namespace TouringCars
                 switch (this.brand)
                 {
                     case Automerken.Audi:
-                        // Console.WriteLine("Jaa wir gehen von Vroom Vroom\n");
+                        // Console.Write("Jaa wir gehen von Vroom Vroom\n");
                         distanceDriven += new Random().Next(3, 7);
                         this.fuel -= new Random().Next(1, 3);
                         if (this.fuel <= 0)
                         {
-                            Console.WriteLine("Stranded..");
+                            Console.Write("Stranded..\n");
                             this.route.getStranded();
                         }
                         break;
 
                     case Automerken.Ferrari:
-                        // Console.WriteLine("Ciao bella, vruomo vruomo!\n");
+                        // Console.Write("Ciao bella, vruomo vruomo!\n");
                         distanceDriven += new Random().Next(4, 8);
                         this.fuel -= new Random().Next(1, 3);
                         if (this.fuel <= 0)
                         {
-                            Console.WriteLine("Stranded..");
+                            Console.Write("Stranded..\n");
                             this.route.getStranded();
                         }
                         break;
 
                     case Automerken.Mercedes:
-                        // Console.WriteLine("Noo noo, this is so not vroom!\n");
+                        // Console.Write("Noo noo, this is so not vroom!\n");
                         distanceDriven += new Random().Next(1, 8);
                         this.fuel -= new Random().Next(1, 4);
                         if (this.fuel <= 0)
                         {
-                            Console.WriteLine("Stranded..");
+                            Console.Write("Stranded..\n");
                             this.route.getStranded();
                         }
                         break;
@@ -152,12 +152,12 @@ namespace TouringCars
         {
             if (this.locked)
             {
-                System.Console.WriteLine("The car is still locked..");
+                Console.Write("The car is still locked..\n");
                 return true;
             }
             else
             {
-                Console.WriteLine("The car is open!");
+                Console.Write("The car is open!\n");
                 return false;
             }
         }
@@ -177,9 +177,9 @@ namespace TouringCars
                     {
                         this.fuel += amount;
                     }
-                    Console.WriteLine("Done, you can now drive some more! " + fuel + " liters left");
+                    Console.Write("Done, you can now drive some more! " + fuel + " liters left\n");
                 }
-                Console.WriteLine($"You\'re still good!\nOff you go, with {fuel} liters left!");
+                Console.Write($"You\'re still good!\nOff you go, with {fuel} liters left!\n");
             }
             // return the fuel amount
             return this.getFuel();

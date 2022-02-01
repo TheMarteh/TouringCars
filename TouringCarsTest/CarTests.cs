@@ -30,7 +30,7 @@ namespace TouringCarsTests
             auto.emptyTank();
             auto.getIn(name);
             auto.drive();
-            Console.WriteLine(auto.checkLock());
+            Console.Write(auto.checkLock());
             Assert.IsTrue(auto.getKMDriven() <= 0, "Car can\'t drive if there is no fuel");
         }
         [TestMethod]
@@ -39,7 +39,7 @@ namespace TouringCarsTests
             Car auto = new Car(name);
             auto.getIn(name);
             auto.drive();
-            Console.WriteLine(auto.checkLock());
+            Console.Write(auto.checkLock());
             Assert.IsTrue(auto.getKMDriven() > 0, "Car can\'t drive if there is no fuel");
         }
         [TestMethod]
@@ -82,8 +82,8 @@ namespace TouringCarsTests
             Analyzer a = new Analyzer(new Car[] { c1, c2 });
             Tuple<Automerken, int, int, int>[] result = a.AvgSpeedPerBrand();
             Tuple<Automerken, int, int, int> wantedResult = Tuple.Create(Automerken.Audi, 2, 0, 0);
-            Console.WriteLine(result[0].ToString());
-            Console.WriteLine(wantedResult.ToString());
+            Console.Write(result[0].ToString());
+            Console.Write(wantedResult.ToString());
             Assert.IsTrue(result[0].ToString() == wantedResult.ToString() && result[0].Item2 == result[0].Item2, "Average Speed calculated incorrectly");
         }
     }

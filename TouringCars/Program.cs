@@ -31,6 +31,7 @@ namespace TouringCars
                 // starting the drive
                 testerCars[i].getIn(testerCars[i].owner);
                 testerCars[i].go();
+                System.Console.WriteLine();
             }
 
             // printing a summary of all the testCars
@@ -76,10 +77,10 @@ namespace TouringCars
             outputLog += a.avgSpeedResults();
             outputLog += a.avgRouteLength();
 
-            Console.WriteLine(outputLog);
+            Console.Write(outputLog);
 
             // debug line
-            Console.WriteLine();
+            Console.Write("");
         }
     }
 
@@ -90,20 +91,20 @@ namespace TouringCars
         {
             for (int i = 0; i <= limit; i++)
             {
-                Console.WriteLine("Counting up until " + limit + ": " + i);
+                Console.Write("Counting up until " + limit + ": " + i);
                 Thread.Sleep(100);
             }
-            Console.WriteLine("Finished!");
+            Console.Write("Finished!");
         }
         public static void CountDown(int limit)
         {
             for (int i = limit; i >= 0; i--)
             {
-                Console.WriteLine("Counting down from " + limit + ": " + i);
+                Console.Write("Counting down from " + limit + ": " + i);
                 Thread.Sleep(100);
 
             }
-            Console.WriteLine("Finished!");
+            Console.Write("Finished!");
         }
     }
 }

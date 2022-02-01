@@ -99,7 +99,7 @@ namespace TouringCars
         }
         public void finish()
         {
-            Console.WriteLine("Finished route, well done!");
+            Console.Write("Finished route, well done!");
             this.hasFinished = true;
         }
 
