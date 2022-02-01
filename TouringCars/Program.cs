@@ -14,7 +14,9 @@ namespace TouringCars
 
             // setting and running the testcars
             TesterCars testcars = new TesterCars();
-            testcars.go();
+            testcars.go(WorkingParams.showOutput);
+
+            // create log entries
             outputLog += testcars.getOutput();
 
             // manually entered waypoints with specified type and location

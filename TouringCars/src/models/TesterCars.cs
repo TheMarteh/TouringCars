@@ -43,18 +43,15 @@ namespace TouringCars
             return testerCars;
         }
 
-        public void go(Boolean showOutput = false)
+        public void go(Boolean showOutput)
         {
             // looping over all cars in the system
             foreach (Car car in cars)
             {
                 // starting the drive
-                car.getIn(car.owner);
-                car.go();
-                if (showOutput)
-                {
-                    this.output += car.printSummary();
-                }
+                output += car.getIn(car.owner, showOutput);
+                output += car.go(showOutput);
+                output += car.printSummary(showOutput);
             }
         }
 
@@ -64,7 +61,15 @@ namespace TouringCars
         }
         public String getOutput()
         {
-            return this.output;
+            if (FixedParams.createLogFile)
+            {
+                foreach (Car car in cars)
+                {
+                    this.output += car.printSummary();
+                }
+                return this.output;
+            }
+            else { return ""; }
         }
     }
 }

@@ -93,14 +93,15 @@ namespace TouringCars
             }
             return sortedPoints;
         }
-        public void getStranded()
+        public String getStranded()
         {
             this.hasFinished = true;
+            return "Stranded..\n";
         }
-        public void finish()
+        public String finish()
         {
-            Console.Write("Finished route, well done!");
             this.hasFinished = true;
+            return "Finished route, well done!\n";
         }
 
         public void arriveAtPoint()

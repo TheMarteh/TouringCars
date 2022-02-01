@@ -42,10 +42,13 @@ namespace TouringCars
             this.fuel = 0;
         }
 
-        public void go()
+        public String go(Boolean addToLog = true)
         {
-            Console.Write($"{this.owner} is starting the tour..\n");
-            if (!checkLock())
+            String result = "";
+            result += $"{this.owner} is starting the tour..\n";
+            var lockCheck = checkLock();
+            result += lockCheck.Item1;
+            if (!lockCheck.Item2)
             {
                 while (!route.hasFinished)
                 {
@@ -53,7 +56,9 @@ namespace TouringCars
                     int distanceToNext = next.Item2;
                     while (distanceToNext > 0 && !this.route.hasFinished)
                     {
-                        distanceToNext -= this.drive();
+                        var res = this.drive();
+                        distanceToNext -= res.Item2;
+                        result += res.Item1;
                     }
                     if (!route.hasFinished)
                     {
@@ -61,48 +66,55 @@ namespace TouringCars
                         switch (next.Item1.type)
                         {
                             case POIType.start:
-                                Console.Write("Start: Let\'s go!");
+                                result += "Start: Let\'s go!\n";
                                 break;
                             case POIType.terminator:
-                                Console.Write("You've finished!");
-                                route.finish();
+                                result += route.finish();
                                 break;
                             case POIType.gas_station:
-                                Console.Write($"Arrived at waypoint {next.Item1.name} at {next.Item2}km!\nFuel left: {this.fuel}\n");
-                                this.addFuel(next.Item1.value);
+                                result += $"Arrived at waypoint {next.Item1.name} at {next.Item2}km!\nFuel left: {this.fuel}\n";
+                                result += this.addFuel(next.Item1.value).Item1;
                                 break;
                             case POIType.food:
-                                Console.Write($"Arrived at waypoint {next.Item1.name} at {next.Item2}km!\nFuel left: {this.fuel}\n");
-                                Console.Write("Nom nom, lekker eten");
+                                result += $"Arrived at waypoint {next.Item1.name} at {next.Item2}km!\nFuel left: {this.fuel}\n";
+                                result += "Nom nom, lekker eten\n";
                                 break;
                             default:
-                                Console.Write($"Arrived at waypoint {next.Item1.name} at {next.Item2}km!\nFuel left: {this.fuel}\n");
+                                result += $"Arrived at waypoint {next.Item1.name} at {next.Item2}km!\nFuel left: {this.fuel}\n";
                                 break;
                         }
                         // Thread.Sleep(1000);
                     }
                 }
-                Console.Write("We\'re done, getting out of the car..\n");
+                result += "We\'re done, getting out of the car..\n";
                 this.locked = true;
             }
+            return addToLog ? result : "";
         }
 
-        public String getIn(String name)
+        public String getIn(String name, Boolean addToLog = true)
         {
-            Console.Write($"Person {name} is trying to get into the car of {this.owner}\n");
+            String result = "";
+            result += $"Person {name} is trying to get into the car of {this.owner}\n";
             if (name == this.owner)
             {
                 this.locked = false;
-                return ("    The car is now unlocked!");
+                result += "    The car is now unlocked!\n";
             }
             else
             {
-                return ("    The car doesn't open..");
+                result += "    The car doesn't open..\n";
             }
+            if (addToLog)
+            {
+                return result;
+            }
+            else return "";
         }
 
-        public int drive()
+        public Tuple<String, int> drive()
         {
+            String result = "";
             int distanceDriven = 0;
             if (!this.locked && !this.route.hasFinished && this.fuel > 0)
             {
@@ -113,57 +125,48 @@ namespace TouringCars
                         // Console.Write("Jaa wir gehen von Vroom Vroom\n");
                         distanceDriven += new Random().Next(3, 7);
                         this.fuel -= new Random().Next(1, 3);
-                        if (this.fuel <= 0)
-                        {
-                            Console.Write("Stranded..\n");
-                            this.route.getStranded();
-                        }
                         break;
 
                     case Automerken.Ferrari:
                         // Console.Write("Ciao bella, vruomo vruomo!\n");
                         distanceDriven += new Random().Next(4, 8);
                         this.fuel -= new Random().Next(1, 3);
-                        if (this.fuel <= 0)
-                        {
-                            Console.Write("Stranded..\n");
-                            this.route.getStranded();
-                        }
                         break;
 
                     case Automerken.Mercedes:
                         // Console.Write("Noo noo, this is so not vroom!\n");
                         distanceDriven += new Random().Next(1, 8);
                         this.fuel -= new Random().Next(1, 4);
-                        if (this.fuel <= 0)
-                        {
-                            Console.Write("Stranded..\n");
-                            this.route.getStranded();
-                        }
                         break;
+                }
+                if (this.fuel <= 0)
+                {
+                    result += this.route.getStranded();
                 }
             }
             this.kmDriven += distanceDriven;
-            return distanceDriven;
+            return Tuple.Create(result, distanceDriven);
         }
 
-        public bool checkLock()
+        public Tuple<String, bool> checkLock()
         // returns true if the car is locked, returns false if the car is unlocked
         {
+            String result = "";
             if (this.locked)
             {
-                Console.Write("The car is still locked..\n");
-                return true;
+                result += "The car is still locked..\n";
+                return Tuple.Create(result, true);
             }
             else
             {
-                Console.Write("The car is open!\n");
-                return false;
+                result += "The car is open!\n";
+                return Tuple.Create(result, false);
             }
         }
 
-        public int addFuel(int amount)
+        public Tuple<String, int> addFuel(int amount)
         {
+            String result = "";
             // can't add fuel if the car is locked
             if (!this.locked)
             {
@@ -177,15 +180,15 @@ namespace TouringCars
                     {
                         this.fuel += amount;
                     }
-                    Console.Write("Done, you can now drive some more! " + fuel + " liters left\n");
+                    result += "Done, you can now drive some more! " + fuel + " liters left\n";
                 }
-                Console.Write($"You\'re still good!\nOff you go, with {fuel} liters left!\n");
+                result += $"You\'re still good!\nOff you go, with {fuel} liters left!\n";
             }
             // return the fuel amount
-            return this.getFuel();
+            return Tuple.Create(result, this.getFuel());
         }
 
-        public String printSummary()
+        public String printSummary(Boolean addToLog = true)
         {
             // returns basic car information and a summary of the trip (so far)
             // Testauto #8's auto (Audi):          6 van de 20 (60 / 225 km)
