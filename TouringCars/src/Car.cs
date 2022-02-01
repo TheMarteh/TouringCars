@@ -49,30 +49,31 @@ namespace TouringCars
             {
                 while (!route.hasFinished)
                 {
-                    PointOfInterest next = route.getNextPoint();
-                    while (this.kmDriven < next.location && !this.route.hasFinished)
+                    var next = route.getNextPoint();
+                    int distanceToNext = next.Item2;
+                    while (distanceToNext > 0 && !this.route.hasFinished)
                     {
-                        this.drive();
+                        distanceToNext -= this.drive();
                     }
                     if (!route.hasFinished)
                     {
                         this.route.arriveAtPoint();
-                        switch (next.type)
+                        switch (next.Item1.type)
                         {
                             case POIType.terminator:
                                 Console.WriteLine("You've finished!");
                                 route.finish();
                                 break;
                             case POIType.gas_station:
-                                Console.WriteLine($"Arrived at waypoint {next.name} at {next.location}km!\nFuel left: {this.fuel}");
-                                this.addFuel(next.value);
+                                Console.WriteLine($"Arrived at waypoint {next.Item1.name} at {next.Item2}km!\nFuel left: {this.fuel}");
+                                this.addFuel(next.Item1.value);
                                 break;
                             case POIType.food:
-                                Console.WriteLine($"Arrived at waypoint {next.name} at {next.location}km!\nFuel left: {this.fuel}");
+                                Console.WriteLine($"Arrived at waypoint {next.Item1.name} at {next.Item2}km!\nFuel left: {this.fuel}");
                                 Console.WriteLine("Nom nom, lekker eten");
                                 break;
                             default:
-                                Console.WriteLine($"Arrived at waypoint {next.name} at {next.location}km!\nFuel left: {this.fuel}");
+                                Console.WriteLine($"Arrived at waypoint {next.Item1.name} at {next.Item2}km!\nFuel left: {this.fuel}");
                                 break;
                         }
                         // Thread.Sleep(1000);
@@ -97,8 +98,9 @@ namespace TouringCars
             }
         }
 
-        public void drive()
+        public int drive()
         {
+            int distanceDriven = 0;
             if (!this.locked && !this.route.hasFinished && this.fuel > 0)
             {
                 Random rnd = new Random();
@@ -106,7 +108,7 @@ namespace TouringCars
                 {
                     case Automerken.Audi:
                         // Console.WriteLine("Jaa wir gehen von Vroom Vroom\n");
-                        this.kmDriven += new Random().Next(3, 7);
+                        distanceDriven += new Random().Next(3, 7);
                         this.fuel -= new Random().Next(1, 3);
                         if (this.fuel <= 0)
                         {
@@ -117,7 +119,7 @@ namespace TouringCars
 
                     case Automerken.Ferrari:
                         // Console.WriteLine("Ciao bella, vruomo vruomo!\n");
-                        this.kmDriven += new Random().Next(4, 8);
+                        distanceDriven += new Random().Next(4, 8);
                         this.fuel -= new Random().Next(1, 3);
                         if (this.fuel <= 0)
                         {
@@ -128,7 +130,7 @@ namespace TouringCars
 
                     case Automerken.Mercedes:
                         // Console.WriteLine("Noo noo, this is so not vroom!\n");
-                        this.kmDriven += new Random().Next(1, 8);
+                        distanceDriven += new Random().Next(1, 8);
                         this.fuel -= new Random().Next(1, 4);
                         if (this.fuel <= 0)
                         {
@@ -138,6 +140,8 @@ namespace TouringCars
                         break;
                 }
             }
+            this.kmDriven += distanceDriven;
+            return distanceDriven;
         }
 
         public bool checkLock()
