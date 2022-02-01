@@ -5,18 +5,22 @@ namespace TouringCars
         private Car[] cars;
         private PointOfInterest[] testPoints;
         private String output;
+        private int waypoints;
 
         public TesterCars()
         {
+            this.waypoints = WorkingParams.wayPoints;
             this.testPoints = createTestPoints();
             this.cars = createTestCars();
             this.output = "";
         }
 
-        private PointOfInterest[] createTestPoints()
+        private PointOfInterest[] createTestPoints(int n = -1)
         {
-            PointOfInterest[] points = new PointOfInterest[WorkingParams.wayPoints];
-            for (int j = 0; j < WorkingParams.wayPoints; j++)
+            n = n < 0 ? this.waypoints : n;
+
+            PointOfInterest[] points = new PointOfInterest[n];
+            for (int j = 0; j < n; j++)
             {
                 points[j] = new PointOfInterest("Testpunt " + j, value: 15, cost: 10);
             }

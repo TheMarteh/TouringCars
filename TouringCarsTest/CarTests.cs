@@ -103,6 +103,13 @@ namespace TouringCarsTests
             System.Console.WriteLine(result);
             Assert.IsTrue(result == 5, "Calculating distance test went wrong.");
         }
+
+        [TestMethod]
+        public void distanceLowerMaxDistance()
+        {
+            TesterCars testcars = new TesterCars();
+            testcars.go(showOutput: false);
+        }
     }
 
 }
