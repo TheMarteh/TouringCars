@@ -55,7 +55,7 @@ namespace TouringCarsTests
         {
             Car auto = new Car(name);
             auto.getIn(name + "WRONGNAME");
-            Assert.IsTrue(auto.checkLock(), "Car can\'t be opened by the wrong person");
+            Assert.IsTrue(auto.checkLock().Item2, "Car can\'t be opened by the wrong person");
         }
 
         [TestMethod]
