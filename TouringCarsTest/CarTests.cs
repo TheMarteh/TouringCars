@@ -34,6 +34,15 @@ namespace TouringCarsTests
             Assert.IsTrue(auto.getKMDriven() <= 0, "Car can\'t drive if there is no fuel");
         }
         [TestMethod]
+        public void drive()
+        {
+            Car auto = new Car(name);
+            auto.getIn(name);
+            auto.drive();
+            Console.WriteLine(auto.checkLock());
+            Assert.IsTrue(auto.getKMDriven() > 0, "Car can\'t drive if there is no fuel");
+        }
+        [TestMethod]
         public void DontDriveLocked()
         {
             Car auto = new Car(name);
