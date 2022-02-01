@@ -12,7 +12,7 @@ namespace TouringCars
         }
         public Route()
         {
-            PointOfInterest p = new PointOfInterest("No route added", int.MaxValue, int.MaxValue, POIType.start);
+            PointOfInterest p = new PointOfInterest("No route added", new int[] { int.MaxValue, int.MaxValue }, POIType.start);
             this.waypoints = new Tuple<PointOfInterest, int>[] { Tuple.Create(p, int.MaxValue) };
             this.hasFinished = false;
             this.atWaypointNumber = 0;
@@ -31,7 +31,7 @@ namespace TouringCars
             return new Tuple<int, int>(waypoints.Count(), total);
         }
 
-        public int getDistanceBetweenPoints(PointOfInterest p1, PointOfInterest p2)
+        public static int getDistanceBetweenPoints(PointOfInterest p1, PointOfInterest p2)
         {
             int result = 0;
             int x1 = p1.locationX;
@@ -39,7 +39,7 @@ namespace TouringCars
             int y1 = p1.locationY;
             int y2 = p2.locationY;
 
-            result = (int)Math.Sqrt((x2 - x1) * (x2 - x1)) + ((y2 - y1) * (y2 - y1));
+            result = (int)Math.Sqrt(Math.Pow(x2 - x1, 2.0) + Math.Pow(y2 - y1, 2.0));
             return result;
         }
 
@@ -57,7 +57,7 @@ namespace TouringCars
             }
             // only happens when there was no finish and the route has run out.
             this.atWaypointNumber--;
-            return Tuple.Create(new PointOfInterest("Route has finished", -1, -1, POIType.terminator), -1);
+            return Tuple.Create(new PointOfInterest("Route has finished", new int[] { -1, -1 }, POIType.terminator), -1);
         }
 
         private Tuple<PointOfInterest, int>[] planRoute(PointOfInterest[] points)
@@ -86,7 +86,7 @@ namespace TouringCars
             }
 
             // converting PointOfInterest[] to Tuple<PointOfInterest, int>[]
-            sortedPoints[0] = Tuple.Create(points[0], getDistanceBetweenPoints(new PointOfInterest("Start", 0, 0, POIType.start), points[0]));
+            sortedPoints[0] = Tuple.Create(points[0], getDistanceBetweenPoints(new PointOfInterest("Start", new int[] { 0, 0 }, POIType.start), points[0]));
             for (int i = 1; i < points.Count(); i++)
             {
                 sortedPoints[i] = Tuple.Create(points[i], getDistanceBetweenPoints(points[i - 1], points[i]));

@@ -41,11 +41,11 @@ namespace TouringCars
             }
 
             // manually entered waypoints with specified type and location
-            PointOfInterest p1 = new PointOfInterest("Benzinepomp", 46, 23, POIType.gas_station);
-            PointOfInterest p2 = new PointOfInterest("McDonalds", 88, 55, POIType.food);
-            PointOfInterest p3 = new PointOfInterest("Coolblue", 69, 71, POIType.work);
-            PointOfInterest p4 = new PointOfInterest("Passing Shot", 48, 12, POIType.hangout);
-            PointOfInterest p5 = new PointOfInterest("Vrienden Live", 10, 46, POIType.hangout);
+            PointOfInterest p1 = new PointOfInterest("Benzinepomp", new int[] { 46, 23 }, POIType.gas_station);
+            PointOfInterest p2 = new PointOfInterest("McDonalds", new int[] { 88, 55 }, POIType.food);
+            PointOfInterest p3 = new PointOfInterest("Coolblue", new int[] { 69, 71 }, POIType.work);
+            PointOfInterest p4 = new PointOfInterest("Passing Shot", new int[] { 48, 12 }, POIType.hangout);
+            PointOfInterest p5 = new PointOfInterest("Vrienden Live", new int[] { 10, 46 }, POIType.hangout);
             PointOfInterest[] points = new PointOfInterest[] { p1, p2, p3, p4, p5 };
 
             // instantiating the route

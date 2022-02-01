@@ -86,6 +86,23 @@ namespace TouringCarsTests
             Console.Write(wantedResult.ToString());
             Assert.IsTrue(result[0].ToString() == wantedResult.ToString() && result[0].Item2 == result[0].Item2, "Average Speed calculated incorrectly");
         }
+
+
+    }
+    [TestClass]
+    public class RouteTests
+    {
+        [TestMethod]
+        public void distanceTest()
+        {
+            PointOfInterest p1 = new PointOfInterest("p1", new int[] { 1, 1 });
+            PointOfInterest p2 = new PointOfInterest("p2", new int[] { 4, 5 });
+            System.Console.WriteLine($"Input: {p2.locationX} - {p1.locationX}, {p2.locationY} - {p1.locationY}");
+            int result = Route.getDistanceBetweenPoints(p1, p2);
+            System.Console.WriteLine($"Input: {p2.locationX - p1.locationX}, {p2.locationY - p1.locationY}");
+            System.Console.WriteLine(result);
+            Assert.IsTrue(result == 5, "Calculating distance test went wrong.");
+        }
     }
 
 }
