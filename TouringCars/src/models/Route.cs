@@ -22,9 +22,9 @@ namespace TouringCars
         {
             // returns the total amount of waypoints and the location of the final waypoint
             int total = 0;
-            for (int i = 1; i < waypoints.Count(); i++)
+            for (int i = 0; i < waypoints.Count(); i++)
             {
-                total += getDistanceBetweenPoints(waypoints[i - 1].Item1, waypoints[i].Item1);
+                total += waypoints[i].Item2;
 
 
             }

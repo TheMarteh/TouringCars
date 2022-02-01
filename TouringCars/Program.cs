@@ -14,10 +14,7 @@ namespace TouringCars
 
             // setting and running the testcars
             TesterCars testcars = new TesterCars();
-            testcars.go(WorkingParams.showOutput);
-
-            // create log entries
-            outputLog += testcars.getOutput(FixedParams.createLogFile);
+            testcars.go(showOutput: false);
 
             // manually entered waypoints with specified type and location
             PointOfInterest p1 = new PointOfInterest("Benzinepomp", new int[] { 46, 23 }, POIType.gas_station);
@@ -37,25 +34,32 @@ namespace TouringCars
             tester.go(); // will not work, as the car first needs to be unlocked
 
             // getting in the car to start it
-            tester.getIn(tester.owner);
+            outputLog += tester.getIn(tester.owner, showOverride: true);
 
             // starting the route
-            tester.go();
+            outputLog += tester.go(showOverride: true);
 
 
             // a car can also drive without a route:
             Car driveTillTheSun = new Car("Pietje");
-            driveTillTheSun.getIn("Pietje");
-            driveTillTheSun.go();
+            outputLog += driveTillTheSun.getIn("Pietje", showOverride: true);
+            outputLog += driveTillTheSun.go(showOverride: true);
 
-            // printing summaries
-            outputLog += tester.printSummary(FixedParams.createLogFile);
-            outputLog += driveTillTheSun.printSummary(FixedParams.createLogFile);
-
-
+            // printing output
             a.setCars(testcars.getCars());
-            outputLog += a.avgSpeedResults();
-            outputLog += a.avgRouteLength();
+            if (FixedParams.createLogFile)
+            {
+                // testcar output
+                outputLog += testcars.getOutput();
+
+                // route summaries
+                outputLog += tester.printSummary();
+                outputLog += driveTillTheSun.printSummary();
+
+                // Analyzer results
+                outputLog += a.avgSpeedResults();
+                outputLog += a.avgRouteLength();
+            }
 
             Console.Write(outputLog);
 

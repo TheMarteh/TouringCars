@@ -49,9 +49,9 @@ namespace TouringCars
             foreach (Car car in cars)
             {
                 // starting the drive
-                output += car.getIn(car.owner, showOutput);
-                output += car.go(showOutput);
-                output += car.printSummary(showOutput);
+                this.output += car.getIn(car.owner, showOutput);
+                this.output += car.go(showOutput);
+                this.output += car.printSummary(showOutput);
             }
         }
 
@@ -59,20 +59,15 @@ namespace TouringCars
         {
             return this.cars;
         }
-        public String getOutput(Boolean AddToLog)
+        public String getOutput()
         {
-            if (AddToLog)
+
+            foreach (Car car in cars)
             {
-                foreach (Car car in cars)
-                {
-                    this.output += car.printSummary();
-                }
-                return this.output;
+                this.output += car.printSummary(FixedParams.createLogFile);
             }
-            else
-            {
-                return "";
-            }
+            return this.output;
+
         }
     }
 }

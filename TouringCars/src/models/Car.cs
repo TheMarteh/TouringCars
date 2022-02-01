@@ -42,7 +42,7 @@ namespace TouringCars
             this.fuel = 0;
         }
 
-        public String go(Boolean addToLog = true)
+        public String go(Boolean showOverride = false)
         {
             String result = "";
             result += $"{this.owner} is starting the tour..\n";
@@ -86,13 +86,13 @@ namespace TouringCars
                         // Thread.Sleep(1000);
                     }
                 }
-                result += "We\'re done, getting out of the car..\n";
+                result += "We\'re done, getting out of the car..\n\n";
                 this.locked = true;
             }
-            return addToLog ? result : "";
+            return showOverride || WorkingParams.showOutput ? result : "";
         }
 
-        public String getIn(String name, Boolean addToLog = true)
+        public String getIn(String name, Boolean showOverride = false)
         {
             String result = "";
             result += $"Person {name} is trying to get into the car of {this.owner}\n";
@@ -105,7 +105,7 @@ namespace TouringCars
             {
                 result += "    The car doesn't open..\n";
             }
-            if (addToLog)
+            if (WorkingParams.showOutput || showOverride)
             {
                 return result;
             }
