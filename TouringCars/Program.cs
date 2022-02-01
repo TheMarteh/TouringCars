@@ -23,7 +23,8 @@ namespace TouringCars
                 }
 
                 // setting up route and creating the car instance
-                Route testTour = new Route(testPoints);
+                Route testTour = new Route();
+                if (testPoints.Length > 0) { testTour = new Route(testPoints); }
                 testerCars[i] = new Car($"Testauto #{i}") { route = testTour };
 
                 // starting the drive
