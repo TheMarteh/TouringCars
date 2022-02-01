@@ -15,12 +15,20 @@ namespace TouringCars
         public String plotRoute(Car[]? cars = null)
         {
             Car[] carsToUse = cars == null ? this.cars : cars;
-            String result = "";
+            String result = "Route Plotter v0.1\n";
             foreach (Car car in carsToUse)
             {
-                result += car.route.getWaypointCoordinates();
+                result += $"Route van {car.owner}:\n";
+                var coords = car.route.getWaypointCoordinates();
+                int i = 1;
+                foreach (var coordTuple in coords)
+                {
+                    result += $"waypoint {i}: [{coordTuple.Item1}, {coordTuple.Item2}]. Distance to get here: {coordTuple.Item3}\n";
+                    i++;
+                }
+                result += $"Total route distance: {car.route.getLength().Item2} km\n";
             }
-            return result;
+            return result += "\n";
         }
 
         public void setCars(Car[] cars)
@@ -71,7 +79,7 @@ namespace TouringCars
             {
                 result += $"{item.Item1}: {item.Item2} cars. They drove a combined {item.Item3} kilometers, averaging {item.Item4} km per car\n";
             }
-            return result;
+            return result + "\n";
         }
 
         public String avgRouteLength()
@@ -83,7 +91,7 @@ namespace TouringCars
                 total += car.route.getLength().Item2;
             }
             result += $"Average Route Length: {total / n} km\n";
-            return result;
+            return result + "\n";
         }
     }
 }

@@ -8,6 +8,7 @@ namespace TouringCars
 
         private int kmDriven;
         private int fuel;
+        private int fuelUsed;
         private int maxFuel;
         private bool locked;
 
@@ -123,6 +124,7 @@ namespace TouringCars
         {
             String result = "";
             int distanceDriven = 0;
+            int fuelCost;
             if (!this.locked && !this.route.hasFinished && this.fuel > 0)
             {
                 Random rnd = new Random();
@@ -131,19 +133,25 @@ namespace TouringCars
                     case Automerken.Audi:
                         // Console.Write("Jaa wir gehen von Vroom Vroom\n");
                         distanceDriven += new Random().Next(3, 7);
-                        this.fuel -= new Random().Next(1, 3);
+                        fuelCost = new Random().Next(1, 3);
+                        this.fuel -= fuelCost;
+                        this.fuelUsed += fuelCost;
                         break;
 
                     case Automerken.Ferrari:
                         // Console.Write("Ciao bella, vruomo vruomo!\n");
                         distanceDriven += new Random().Next(4, 8);
-                        this.fuel -= new Random().Next(1, 3);
+                        fuelCost = new Random().Next(1, 3);
+                        this.fuel -= fuelCost;
+                        this.fuelUsed += fuelCost;
                         break;
 
                     case Automerken.Mercedes:
                         // Console.Write("Noo noo, this is so not vroom!\n");
                         distanceDriven += new Random().Next(1, 8);
-                        this.fuel -= new Random().Next(1, 4);
+                        fuelCost = new Random().Next(1, 4);
+                        this.fuel -= fuelCost;
+                        this.fuelUsed += fuelCost;
                         break;
                 }
             }

@@ -31,12 +31,13 @@ namespace TouringCars
             return new Tuple<int, int>(waypoints.Count(), total);
         }
 
-        public Tuple<int, int>[] getWaypointCoordinates()
+        public Tuple<int, int, int>[] getWaypointCoordinates()
         {
-            Tuple<int, int>[] coords = new Tuple<int, int>[waypoints.Count()];
+            Tuple<int, int, int>[] coords = new Tuple<int, int, int>[waypoints.Count()];
             for (int i = 0; i < coords.Count(); i++)
             {
-                coords[i] = waypoints[i].Item1.getCoordinates();
+                var tup = waypoints[i].Item1.getCoordinates();
+                coords[i] = Tuple.Create(tup.Item1, tup.Item2, waypoints[i].Item2);
             }
             return coords;
         }

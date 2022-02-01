@@ -56,6 +56,7 @@ namespace TouringCars
                 // route summaries
                 outputLog += tester.printSummary();
                 outputLog += driveTillTheSun.printSummary();
+                outputLog += "\n";
 
                 // Analyzer results
                 outputLog += a.avgSpeedResults();
