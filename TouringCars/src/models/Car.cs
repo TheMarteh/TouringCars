@@ -52,7 +52,6 @@ namespace TouringCars
             {
                 while (!route.hasFinished)
                 {
-                    System.Console.WriteLine("Get next Point");
                     var next = route.getNextPoint();
                     int distanceToNext = next.Item2;
                     while (distanceToNext > 0 && !this.route.hasFinished && fuel > 0)
@@ -64,6 +63,8 @@ namespace TouringCars
                     if (!route.hasFinished)
                     {
                         this.route.arriveAtPoint();
+                        // offset the overshoot
+                        this.kmDriven += distanceToNext;
                         switch (next.Item1.type)
                         {
                             case POIType.start:
@@ -88,7 +89,6 @@ namespace TouringCars
                     }
                     if (this.fuel <= 0)
                     {
-                        System.Console.WriteLine("Get stranded!!!");
                         result += this.route.getStranded();
                         // break;
                     }

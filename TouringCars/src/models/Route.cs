@@ -31,6 +31,17 @@ namespace TouringCars
             return new Tuple<int, int>(waypoints.Count(), total);
         }
 
+        public Tuple<int, int>[] getWaypointCoordinates()
+        {
+            int total = 0;
+            Tuple<int, int>[] coords = new Tuple<int, int>[waypoints.Count()];
+            for (int i = 0; i < coords.Count(); i++)
+            {
+                coords[i] = waypoints[i].Item1.getCoordinates();
+            }
+            return coords;
+        }
+
         public static int getDistanceBetweenPoints(PointOfInterest p1, PointOfInterest p2)
         {
             int result = 0;
@@ -57,7 +68,7 @@ namespace TouringCars
             }
             // only happens when there was no finish and the route has run out.
             this.atWaypointNumber--;
-            return Tuple.Create(new PointOfInterest("Route has finished", new int[] { -1, -1 }, POIType.terminator), -1);
+            return Tuple.Create(new PointOfInterest("Route has finished", new int[] { -1, -1 }, POIType.terminator), 0);
         }
 
         private Tuple<PointOfInterest, int>[] planRoute(PointOfInterest[] points)

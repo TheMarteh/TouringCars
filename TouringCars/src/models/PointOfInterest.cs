@@ -20,6 +20,12 @@ namespace TouringCars
             this.locationY = location[1];
         }
 
+        public Tuple<int, int> getCoordinates()
+        {
+            Tuple<int, int> coords = Tuple.Create(this.locationX, this.locationY);
+            return coords;
+        }
+
         public PointOfInterest(String name, int value, int cost)
         {
             this.name = name;

@@ -12,6 +12,17 @@ namespace TouringCars
         {
         }
 
+        public String plotRoute(Car[]? cars = null)
+        {
+            Car[] carsToUse = cars == null ? this.cars : cars;
+            String result = "";
+            foreach (Car car in carsToUse)
+            {
+                result += car.route.getWaypointCoordinates();
+            }
+            return result;
+        }
+
         public void setCars(Car[] cars)
         {
             this.cars = cars;

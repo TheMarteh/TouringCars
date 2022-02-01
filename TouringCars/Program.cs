@@ -1,4 +1,5 @@
 ﻿using System;
+using OxyPlot;
 // using System.Threading;
 
 namespace TouringCars
@@ -15,8 +16,6 @@ namespace TouringCars
             // setting and running the testcars
             TesterCars testcars = new TesterCars();
             testcars.go(showOutput: true);
-
-            System.Console.WriteLine("Keep going in program");
 
             // manually entered waypoints with specified type and location
             PointOfInterest p1 = new PointOfInterest("Benzinepomp", new int[] { 46, 23 }, POIType.gas_station);
@@ -61,6 +60,9 @@ namespace TouringCars
                 // Analyzer results
                 outputLog += a.avgSpeedResults();
                 outputLog += a.avgRouteLength();
+
+                // Static Analyzer use
+                outputLog += a.plotRoute(new Car[] { tester });
             }
 
             Console.Write(outputLog);

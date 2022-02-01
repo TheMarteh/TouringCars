@@ -70,7 +70,7 @@ namespace TouringCarsTests
         [TestMethod]
         public void distanceLowerMaxDistance()
         {
-            TesterCars testcars = new TesterCars(50, 2, 50);
+            TesterCars testcars = new TesterCars(50, 3, 50);
             testcars.go(showOutput: false);
             foreach (Car carToTest in testcars.getCars())
             {
