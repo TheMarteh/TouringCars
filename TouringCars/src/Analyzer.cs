@@ -71,7 +71,7 @@ namespace TouringCars
             {
                 total += car.route.getLength().Item2;
             }
-            result += $"Average Route Length: {total} km\n";
+            result += $"Average Route Length: {total / n} km\n";
             return result;
         }
     }
