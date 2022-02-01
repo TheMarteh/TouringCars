@@ -13,7 +13,7 @@ namespace TouringCars
             String outputLog = "";
 
             // setting and running the testcars
-            TesterCars testcars = new TesterCars();
+            TesterCars testcars = new TesterCars(50, 1, 1);
             testcars.go(showOutput: false);
 
             // manually entered waypoints with specified type and location

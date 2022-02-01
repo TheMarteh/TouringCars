@@ -5,19 +5,32 @@ namespace TouringCars
         private Car[] cars;
         private PointOfInterest[] testPoints;
         private String output;
-        private int waypoints;
+        private int waypointsToMake;
+        private int WaypointsToUse;
+        private int carAmount;
 
+        public TesterCars(int customWaypoints, int customRouteLength, int customCarAmount)
+        {
+            this.carAmount = customCarAmount;
+            this.WaypointsToUse = customRouteLength;
+            this.waypointsToMake = customWaypoints;
+            this.testPoints = createTestPoints();
+            this.cars = createTestCars();
+            this.output = "";
+        }
         public TesterCars()
         {
-            this.waypoints = WorkingParams.wayPoints;
+            this.carAmount = WorkingParams.testCars;
+            this.waypointsToMake = WorkingParams.wayPoints;
+            this.WaypointsToUse = WorkingParams.routePoints;
             this.testPoints = createTestPoints();
             this.cars = createTestCars();
             this.output = "";
         }
 
-        private PointOfInterest[] createTestPoints(int n = -1)
+        private PointOfInterest[] createTestPoints()
         {
-            n = n < 0 ? this.waypoints : n;
+            int n = this.waypointsToMake;
 
             PointOfInterest[] points = new PointOfInterest[n];
             for (int j = 0; j < n; j++)
@@ -28,12 +41,12 @@ namespace TouringCars
         }
         private Car[] createTestCars()
         {
-            Car[] testerCars = new Car[WorkingParams.testCars];
-            for (int i = 0; i < WorkingParams.testCars; i++)
+            Car[] testerCars = new Car[carAmount];
+            for (int i = 0; i < carAmount; i++)
             {
                 // populating the test route with random points. Each test car gets their own route
-                PointOfInterest[] carPoints = new PointOfInterest[WorkingParams.routePoints];
-                for (int j = 0; j < WorkingParams.routePoints; j++)
+                PointOfInterest[] carPoints = new PointOfInterest[this.WaypointsToUse];
+                for (int j = 0; j < this.WaypointsToUse; j++)
                 {
                     carPoints[j] = this.testPoints[new Random().Next(0, testPoints.Count())];
                 }

@@ -67,6 +67,28 @@ namespace TouringCarsTests
             Assert.IsTrue(auto.getFuel() == (FixedParams.startingFuel + 10), "Fuel adding test has gone wrong, or you should start with less fuel");
         }
 
+        [TestMethod]
+        public void distanceLowerMaxDistance()
+        {
+            TesterCars testcars = new TesterCars(50, 2, 50);
+            testcars.go(showOutput: false);
+            foreach (Car carToTest in testcars.getCars())
+            {
+                if (carToTest.route.atWaypointNumber >= carToTest.route.countWaypoints())
+                {
+                    System.Console.WriteLine("At waypoint " + carToTest.route.atWaypointNumber + "/" + carToTest.route.countWaypoints());
+                    System.Console.WriteLine("at or over finish" + carToTest.getKMDriven() + " of " + carToTest.route.getLength().Item2);
+                    Assert.IsTrue(carToTest.getKMDriven() >= carToTest.route.getLength().Item2, "Driven less than routelength!");
+                }
+                else if (carToTest.route.atWaypointNumber < carToTest.route.countWaypoints())
+                {
+                    System.Console.WriteLine("At waypoint " + carToTest.route.atWaypointNumber + "/" + carToTest.route.countWaypoints());
+                    System.Console.WriteLine("stranded, driven " + carToTest.getKMDriven() + " of " + carToTest.route.getLength().Item2);
+                    Assert.IsTrue(carToTest.getKMDriven() <= carToTest.route.getLength().Item2, "Driven more than routelength!");
+                }
+            }
+        }
+
     }
     [TestClass]
     public class AnalyzerTests
@@ -102,13 +124,6 @@ namespace TouringCarsTests
             System.Console.WriteLine($"Input: {p2.locationX - p1.locationX}, {p2.locationY - p1.locationY}");
             System.Console.WriteLine(result);
             Assert.IsTrue(result == 5, "Calculating distance test went wrong.");
-        }
-
-        [TestMethod]
-        public void distanceLowerMaxDistance()
-        {
-            TesterCars testcars = new TesterCars();
-            testcars.go(showOutput: false);
         }
     }
 
