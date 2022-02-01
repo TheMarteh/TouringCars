@@ -60,6 +60,9 @@ namespace TouringCars
                         this.route.arriveAtPoint();
                         switch (next.Item1.type)
                         {
+                            case POIType.start:
+                                Console.WriteLine("Let\'s go!");
+                                break;
                             case POIType.terminator:
                                 Console.WriteLine("You've finished!");
                                 route.finish();
@@ -149,11 +152,12 @@ namespace TouringCars
         {
             if (this.locked)
             {
+                System.Console.WriteLine("The car is still locked..");
                 return true;
             }
             else
             {
-                Console.WriteLine("The car is still locked.. Please unlock first!");
+                Console.WriteLine("The car is open!");
                 return false;
             }
         }

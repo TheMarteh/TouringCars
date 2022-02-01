@@ -3,7 +3,7 @@ namespace TouringCars
     public class WorkingParams
     {
         // determines the amount of cars should run in the simulation
-        public static int testCars = 100;
+        public static int testCars = 0;
         // the amount of randomly generated waypoints
         public static int wayPoints = 50;
         // the maximum distance a randomly generated waypoint is away from 0

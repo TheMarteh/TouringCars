@@ -9,10 +9,13 @@ namespace TouringCars
 
     public enum POIType
     {
+        // regular types
         gas_station,
         food,
         hangout,
         work,
-        terminator
+        // special types
+        terminator,
+        start,
     }
 }

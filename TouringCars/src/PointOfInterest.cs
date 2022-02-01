@@ -28,7 +28,7 @@ namespace TouringCars
             Random rnd = new Random();
             this.locationX = rnd.Next(0, WorkingParams.maxDistance);
             this.locationY = rnd.Next(0, WorkingParams.maxDistance);
-            this.type = (POIType)rnd.Next(0, Enum.GetNames(typeof(POIType)).Length - 1);
+            this.type = (POIType)rnd.Next(0, Enum.GetNames(typeof(POIType)).Length - 2);
         }
 
     }
