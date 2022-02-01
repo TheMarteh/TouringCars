@@ -33,7 +33,6 @@ namespace TouringCars
 
         public Tuple<int, int>[] getWaypointCoordinates()
         {
-            int total = 0;
             Tuple<int, int>[] coords = new Tuple<int, int>[waypoints.Count()];
             for (int i = 0; i < coords.Count(); i++)
             {
