@@ -2,7 +2,7 @@ namespace TouringCars
 {
     public class Route
     {
-        private Tuple<PointOfInterest, bool>[] waypoints;
+        private Tuple<PointOfInterest, int>[] waypoints;
         public bool hasFinished;
         public int atWaypointNumber;
 
@@ -12,7 +12,7 @@ namespace TouringCars
         }
         public Route()
         {
-            this.waypoints = new Tuple<PointOfInterest, bool>[] { Tuple.Create(new PointOfInterest("No route added", int.MaxValue, POIType.terminator), false) };
+            this.waypoints = new Tuple<PointOfInterest, int>[] { Tuple.Create(new PointOfInterest("No route added", int.MaxValue, POIType.terminator), -1) };
             this.hasFinished = false;
             this.atWaypointNumber = 0;
         }
@@ -40,10 +40,10 @@ namespace TouringCars
             return new PointOfInterest("Route has finished", -1, POIType.terminator);
         }
 
-        private Tuple<PointOfInterest, bool>[] planRoute(PointOfInterest[] points)
+        private Tuple<PointOfInterest, int>[] planRoute(PointOfInterest[] points)
         {
             // initializing the final list as a Tuple<PointOfInterest, bool> array
-            Tuple<PointOfInterest, bool>[] sortedPoints = new Tuple<PointOfInterest, bool>[points.Count()];
+            Tuple<PointOfInterest, int>[] sortedPoints = new Tuple<PointOfInterest, int>[points.Count()];
 
             // sorting the points based on distance to 0 ascending 
             // bubble sort
@@ -64,7 +64,7 @@ namespace TouringCars
             // converting PointOfInterest[] to Tuple<PointOfInterest, bool>[]
             for (int i = 0; i < points.Count(); i++)
             {
-                sortedPoints[i] = Tuple.Create(points[i], false);
+                sortedPoints[i] = Tuple.Create(points[i], 10);
             }
             return sortedPoints;
         }
