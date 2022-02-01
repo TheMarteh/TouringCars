@@ -78,7 +78,9 @@ namespace TouringCarsTests
             Car c2 = new Car("Tester", Automerken.Audi);
             c1.getIn("Sid");
             c2.getIn("Tester");
-            Tuple<Automerken, int, int, int>[] result = Analyzer.AvgSpeedPerBrand(new Car[] { c1, c2 });
+
+            Analyzer a = new Analyzer(new Car[] { c1, c2 });
+            Tuple<Automerken, int, int, int>[] result = a.AvgSpeedPerBrand();
             Tuple<Automerken, int, int, int> wantedResult = Tuple.Create(Automerken.Audi, 2, 0, 0);
             Console.WriteLine(result[0].ToString());
             Console.WriteLine(wantedResult.ToString());

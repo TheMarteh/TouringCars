@@ -9,6 +9,7 @@ namespace TouringCars
         public static void Main()
         {
             // initializing outputlog
+            Analyzer a = new Analyzer();
             String outputLog = "";
 
             // setting and running the testcars
@@ -70,7 +71,10 @@ namespace TouringCars
             // printing summaries
             outputLog += tester.printSummary();
             outputLog += driveTillTheSun.printSummary();
-            outputLog += Analyzer.avgSpeedResults(testerCars);
+
+            a.setCars(testerCars);
+            outputLog += a.avgSpeedResults();
+            outputLog += a.avgRouteLength();
 
             Console.WriteLine(outputLog);
 
