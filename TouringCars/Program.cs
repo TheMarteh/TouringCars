@@ -13,32 +13,9 @@ namespace TouringCars
             String outputLog = "";
 
             // setting and running the testcars
-            Car[] testerCars = new Car[WorkingParams.testCars];
-            for (int i = 0; i < WorkingParams.testCars; i++)
-            {
-                // populating the test route with random points. Each test car gets their own route
-                PointOfInterest[] testPoints = new PointOfInterest[WorkingParams.wayPoints];
-                for (int j = 0; j < WorkingParams.wayPoints; j++)
-                {
-                    testPoints[j] = new PointOfInterest("Testpunt " + j, value: 15, cost: 10);
-                }
-
-                // setting up route and creating the car instance
-                Route testTour = new Route();
-                if (testPoints.Length > 0) { testTour = new Route(testPoints); }
-                testerCars[i] = new Car($"Testauto #{i}") { route = testTour };
-
-                // starting the drive
-                testerCars[i].getIn(testerCars[i].owner);
-                testerCars[i].go();
-                System.Console.WriteLine();
-            }
-
-            // printing a summary of all the testCars
-            foreach (Car car in testerCars)
-            {
-                outputLog += car.printSummary();
-            }
+            TesterCars testcars = new TesterCars();
+            testcars.go();
+            outputLog += testcars.getOutput();
 
             // manually entered waypoints with specified type and location
             PointOfInterest p1 = new PointOfInterest("Benzinepomp", new int[] { 46, 23 }, POIType.gas_station);
@@ -73,7 +50,7 @@ namespace TouringCars
             outputLog += tester.printSummary();
             outputLog += driveTillTheSun.printSummary();
 
-            a.setCars(testerCars);
+            a.setCars(testcars.getCars());
             outputLog += a.avgSpeedResults();
             outputLog += a.avgRouteLength();
 

@@ -16,7 +16,7 @@ namespace TouringCars
             this.owner = owner;
             this.kmDriven = 0;
             this.maxFuel = FixedParams.maxCarFuel;
-            this.fuel = WorkingParams.startingFuel;
+            this.fuel = FixedParams.startingFuel;
             this.locked = true;
             this.brand = (Automerken)new Random().Next(0, Enum.GetNames(typeof(Automerken)).Length);
             this.route = new Route();

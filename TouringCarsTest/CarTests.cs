@@ -64,7 +64,7 @@ namespace TouringCarsTests
             Car auto = new Car(name);
             auto.getIn(name);
             auto.addFuel(10);
-            Assert.IsTrue(auto.getFuel() == (WorkingParams.startingFuel + 10), "Fuel adding test has gone wrong, or you should start with less fuel");
+            Assert.IsTrue(auto.getFuel() == (FixedParams.startingFuel + 10), "Fuel adding test has gone wrong, or you should start with less fuel");
         }
 
     }
