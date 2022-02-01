@@ -70,19 +70,19 @@ namespace TouringCars
             // Sorting breaks with locationX and locationY. For now just sorting by locationX
 
 
-            PointOfInterest temp;
-            for (int j = 0; j <= points.Length - 2; j++)
-            {
-                for (int i = 0; i <= points.Length - 2; i++)
-                {
-                    if (points[i].locationX > points[i + 1].locationX)
-                    {
-                        temp = points[i + 1];
-                        points[i + 1] = points[i];
-                        points[i] = temp;
-                    }
-                }
-            }
+            // PointOfInterest temp;
+            // for (int j = 0; j <= points.Length - 2; j++)
+            // {
+            //     for (int i = 0; i <= points.Length - 2; i++)
+            //     {
+            //         if (points[i].locationX > points[i + 1].locationX)
+            //         {
+            //             temp = points[i + 1];
+            //             points[i + 1] = points[i];
+            //             points[i] = temp;
+            //         }
+            //     }
+            // }
 
             // converting PointOfInterest[] to Tuple<PointOfInterest, int>[]
             sortedPoints[0] = Tuple.Create(points[0], getDistanceBetweenPoints(new PointOfInterest("Start", 0, 0), points[0]));
