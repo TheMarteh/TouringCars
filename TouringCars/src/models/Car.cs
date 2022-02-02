@@ -43,6 +43,18 @@ namespace TouringCars
             this.fuel = 0;
         }
 
+        public String handlePointCallback(ValueChanger v)
+        {
+            String result = "";
+            result += this.addFuel(v.fuelToChange).Item1;
+
+            if (v.isFinished)
+            {
+                result += this.route.finish();
+            }
+            return result;
+        }
+
         public String go(Boolean showOverride = false)
         {
             String result = "";
@@ -71,28 +83,11 @@ namespace TouringCars
                         // offset the overshoot
                         this.kmDriven += distanceToNext;
 
-                        this.route.arriveAtPoint(this.fuelUsed, next.poi);
+                        var callback = this.route.arriveAtPoint(this.fuelUsed, this.fuel);
+                        result += callback.Item1;
+                        result += this.handlePointCallback(callback.Item2);
 
-                        switch (next.poi.type)
-                        {
-                            case POIType.start:
-                                result += "Start: Let\'s go!\n";
-                                break;
-                            case POIType.terminator:
-                                result += route.finish();
-                                break;
-                            case POIType.gas_station:
-                                result += $"Arrived at waypoint {next.poi.name} at {next.distanceToNextPoint}km!\nFuel left: {this.fuel}\n";
-                                result += this.addFuel(next.poi.value).Item1;
-                                break;
-                            case POIType.food:
-                                result += $"Arrived at waypoint {next.poi.name} at {next.distanceToNextPoint}km!\nFuel left: {this.fuel}\n";
-                                result += "Nom nom, lekker eten\n";
-                                break;
-                            default:
-                                result += $"Arrived at waypoint {next.poi.name} at {next.distanceToNextPoint}km!\nFuel left: {this.fuel}\n";
-                                break;
-                        }
+
                         // Thread.Sleep(1000);
                     }
                 }
@@ -195,7 +190,10 @@ namespace TouringCars
                     }
                     result += "Done, you can now drive some more! " + fuel + " liters left\n";
                 }
-                result += $"You\'re still good!\nOff you go, with {fuel} liters left!\n";
+                else
+                {
+                    result += $"You\'re still good!\nOff you go, with {fuel} liters left!\n";
+                }
             }
             // return the fuel amount
             return Tuple.Create(result, this.getFuel());

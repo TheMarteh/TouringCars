@@ -14,7 +14,42 @@ namespace TouringCars
             this.hasReached = hasReached;
             this.fuelUsedSoFar = fuelUsedSoFar;
         }
+
+        public Tuple<String, ValueChanger> arriveAtPoint(int usedFuel, int fuelLeft)
+        {
+            this.hasReached = true;
+            this.fuelUsedSoFar = usedFuel;
+
+            String result = "";
+            ValueChanger valueChanger;
+
+            switch (this.poi.type)
+            {
+                case POIType.start:
+                    result += "Start: Let\'s go!\n";
+                    valueChanger = new ValueChanger(0, 0, 0, 0, false);
+                    break;
+                case POIType.terminator:
+                    valueChanger = new ValueChanger(0, 0, 0, 0, true);
+                    break;
+                case POIType.gas_station:
+                    valueChanger = new ValueChanger(this.poi.value, this.poi.cost, 0, 0, false);
+                    result += $"Arrived at waypoint {this.poi.name} at {this.distanceToNextPoint}km!\nFuel left: {fuelLeft}\n";
+                    break;
+                case POIType.food:
+                    valueChanger = new ValueChanger(0, this.poi.cost, this.poi.value, 0, false);
+                    result += $"Arrived at waypoint {this.poi.name} at {this.distanceToNextPoint}km!\nFuel left: {fuelLeft}\n";
+                    result += "Nom nom, lekker eten\n";
+                    break;
+                default:
+                    valueChanger = new ValueChanger(0, 0, 0, 0, false);
+                    result += $"Arrived at waypoint {this.poi.name} at {this.distanceToNextPoint}km!\nFuel left: {fuelLeft}\n";
+                    break;
+            }
+            return Tuple.Create(result, valueChanger);
+        }
     }
+
     public class Route
     {
         private RoutePoint[] waypoints;
@@ -126,11 +161,14 @@ namespace TouringCars
             return "Finished route, well done!\n";
         }
 
-        public void arriveAtPoint(int usedFuel, PointOfInterest waypoint)
+        public Tuple<String, ValueChanger> arriveAtPoint(int usedFuel, int fuelLeft)
         {
-            this.waypoints[atWaypointNumber].hasReached = true;
-            this.waypoints[atWaypointNumber].fuelUsedSoFar = usedFuel;
+            RoutePoint p = this.waypoints[atWaypointNumber];
+
             this.atWaypointNumber++;
+            var callback = p.arriveAtPoint(usedFuel, fuelLeft);
+
+            return callback;
         }
     }
 
