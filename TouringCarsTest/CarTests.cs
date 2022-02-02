@@ -89,12 +89,12 @@ namespace TouringCarsTests
                     {
                         foreach (var waypoint in carToTest.route.getDrivenRoute())
                         {
-                            System.Console.WriteLine(waypoint.Item1.ToString());
-                            System.Console.WriteLine($"{waypoint.Item1.name}: [{waypoint.Item1.locationX},{waypoint.Item1.locationY}]");
+                            System.Console.WriteLine(waypoint.poi.ToString());
+                            System.Console.WriteLine($"{waypoint.poi.name}: [{waypoint.poi.locationX},{waypoint.poi.locationY}]");
                         }
                         System.Console.WriteLine("At waypoint " + carToTest.route.atWaypointNumber + "/" + carToTest.route.countWaypoints());
                         System.Console.WriteLine("stranded, driven " + carToTest.getKMDriven() + " of " + carToTest.route.getLength().Item2);
-                        System.Console.WriteLine($"{carToTest.route.getNextPoint().Item2}");
+                        System.Console.WriteLine($"{carToTest.route.getNextPoint().distanceToNextPoint}");
                     }
                     Assert.IsTrue(carToTest.getKMDriven() <= carToTest.route.getLength().Item2, "Driven more than routelength!");
                 }

@@ -54,7 +54,7 @@ namespace TouringCars
                 while (!route.hasFinished)
                 {
                     var next = route.getNextPoint();
-                    int distanceToNext = next.Item2;
+                    int distanceToNext = next.distanceToNextPoint;
                     while (distanceToNext > 0 && !this.route.hasFinished && fuel > 0)
                     {
                         var res = this.drive();
@@ -68,10 +68,10 @@ namespace TouringCars
                     }
                     else if (!route.hasFinished)
                     {
-                        this.route.arriveAtPoint(this.fuelUsed, next.Item1);
+                        this.route.arriveAtPoint(this.fuelUsed, next.poi);
                         // offset the overshoot
                         this.kmDriven += distanceToNext;
-                        switch (next.Item1.type)
+                        switch (next.poi.type)
                         {
                             case POIType.start:
                                 result += "Start: Let\'s go!\n";
@@ -80,15 +80,15 @@ namespace TouringCars
                                 result += route.finish();
                                 break;
                             case POIType.gas_station:
-                                result += $"Arrived at waypoint {next.Item1.name} at {next.Item2}km!\nFuel left: {this.fuel}\n";
-                                result += this.addFuel(next.Item1.value).Item1;
+                                result += $"Arrived at waypoint {next.poi.name} at {next.distanceToNextPoint}km!\nFuel left: {this.fuel}\n";
+                                result += this.addFuel(next.poi.value).Item1;
                                 break;
                             case POIType.food:
-                                result += $"Arrived at waypoint {next.Item1.name} at {next.Item2}km!\nFuel left: {this.fuel}\n";
+                                result += $"Arrived at waypoint {next.poi.name} at {next.distanceToNextPoint}km!\nFuel left: {this.fuel}\n";
                                 result += "Nom nom, lekker eten\n";
                                 break;
                             default:
-                                result += $"Arrived at waypoint {next.Item1.name} at {next.Item2}km!\nFuel left: {this.fuel}\n";
+                                result += $"Arrived at waypoint {next.poi.name} at {next.distanceToNextPoint}km!\nFuel left: {this.fuel}\n";
                                 break;
                         }
                         // Thread.Sleep(1000);

@@ -25,10 +25,10 @@ namespace TouringCars
                 int i = 1;
                 foreach (var point in drivenRoute)
                 {
-                    if (point.Item3)
+                    if (point.hasReached)
                     {
-                        String p1 = $"waypoint {i}: [{point.Item1.locationX}, {point.Item1.locationY}].";
-                        String p2 = $"Distance to get here: {point.Item2} km, Fuel used so far: {point.Item4}\n";
+                        String p1 = $"waypoint {i}: [{point.poi.locationX}, {point.poi.locationY}].";
+                        String p2 = $"Distance to get here: {point.distanceToNextPoint} km, Fuel used so far: {point.fuelUsedSoFar}\n";
                         String devider = "";
                         while (p1.Length + p2.Length + devider.Length < FixedParams.maxScreenWidth)
                         {
