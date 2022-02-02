@@ -136,6 +136,12 @@ namespace TouringCarsTests
                 System.Console.WriteLine(result);
                 Assert.IsTrue(result == 5, "Calculating distance test went wrong.");
             }
+
+            public void lenShouldBe0()
+            {
+                Route route = new Route();
+                Assert.IsTrue(route.getLength().Item2 == 0, "Final routelength when not adding points is not 0");
+            }
         }
 
     }
