@@ -61,11 +61,16 @@ namespace TouringCars
                         distanceToNext -= res.Item2;
                         result += res.Item1;
                     }
-                    if (!route.hasFinished)
+                    if (this.fuel <= 0)
                     {
-                        this.route.arriveAtPoint();
+                        result += this.route.getStranded();
+                        // break;
+                    }
+                    else if (!route.hasFinished)
+                    {
+                        this.route.arriveAtPoint(this.fuelUsed, next.Item1);
                         // offset the overshoot
-                        this.kmDriven += distanceToNext;
+                        // this.kmDriven += distanceToNext;
                         switch (next.Item1.type)
                         {
                             case POIType.start:
@@ -87,11 +92,6 @@ namespace TouringCars
                                 break;
                         }
                         // Thread.Sleep(1000);
-                    }
-                    if (this.fuel <= 0)
-                    {
-                        result += this.route.getStranded();
-                        // break;
                     }
                 }
                 result += "We\'re done, getting out of the car..\n\n";

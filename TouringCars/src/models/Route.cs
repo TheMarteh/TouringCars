@@ -2,20 +2,25 @@ namespace TouringCars
 {
     public class Route
     {
-        private Tuple<PointOfInterest, int>[] waypoints;
+        private Tuple<PointOfInterest, int, bool, int>[] waypoints;
+        private Tuple<PointOfInterest, int, int>[] drivenRoute;
         public bool hasFinished;
         public int atWaypointNumber;
 
         public Route(PointOfInterest[] points) : this()
         {
             this.waypoints = this.planRoute(points);
+            this.drivenRoute = new Tuple<PointOfInterest, int, int>[waypoints.Count()];
         }
         public Route()
         {
-            PointOfInterest p = new PointOfInterest("No route added", new int[] { int.MaxValue, int.MaxValue }, POIType.start);
-            this.waypoints = new Tuple<PointOfInterest, int>[] { Tuple.Create(p, int.MaxValue) };
+            PointOfInterest p1 = new PointOfInterest("No route added", new int[] { 0, 0 }, POIType.start);
+            PointOfInterest p2 = new PointOfInterest("No route added", new int[] { int.MaxValue, int.MaxValue }, POIType.terminator);
+
+            this.waypoints = new Tuple<PointOfInterest, int, bool, int>[] { Tuple.Create(p1, 0, false, 0), Tuple.Create(p2, int.MaxValue, false, 0) };
             this.hasFinished = false;
             this.atWaypointNumber = 0;
+            this.drivenRoute = new Tuple<PointOfInterest, int, int>[waypoints.Count()];
         }
 
         public Tuple<int, int> getLength()
@@ -31,15 +36,9 @@ namespace TouringCars
             return new Tuple<int, int>(waypoints.Count(), total);
         }
 
-        public Tuple<int, int, int>[] getWaypointCoordinates()
+        public Tuple<PointOfInterest, int, bool, int>[] getDrivenRoute()
         {
-            Tuple<int, int, int>[] coords = new Tuple<int, int, int>[waypoints.Count()];
-            for (int i = 0; i < coords.Count(); i++)
-            {
-                var tup = waypoints[i].Item1.getCoordinates();
-                coords[i] = Tuple.Create(tup.Item1, tup.Item2, waypoints[i].Item2);
-            }
-            return coords;
+            return this.waypoints;
         }
 
         public static int getDistanceBetweenPoints(PointOfInterest p1, PointOfInterest p2)
@@ -59,7 +58,7 @@ namespace TouringCars
             return waypoints.Length;
         }
 
-        public Tuple<PointOfInterest, int> getNextPoint()
+        public Tuple<PointOfInterest, int, bool, int> getNextPoint()
         {
             // if there are any more waypoints left in the route, return the next waypoint. else, return a terminator waypoint
             if (this.atWaypointNumber < this.waypoints.Count())
@@ -68,13 +67,13 @@ namespace TouringCars
             }
             // only happens when there was no finish and the route has run out.
             this.atWaypointNumber--;
-            return Tuple.Create(new PointOfInterest("Route has finished", new int[] { -1, -1 }, POIType.terminator), 0);
+            return Tuple.Create(new PointOfInterest("Route has finished", new int[] { -1, -1 }, POIType.terminator), 0, false, 0);
         }
 
-        private Tuple<PointOfInterest, int>[] planRoute(PointOfInterest[] points)
+        private Tuple<PointOfInterest, int, bool, int>[] planRoute(PointOfInterest[] points)
         {
             // initializing the final list as a Tuple<PointOfInterest, bool> array
-            Tuple<PointOfInterest, int>[] sortedPoints = new Tuple<PointOfInterest, int>[points.Count()];
+            Tuple<PointOfInterest, int, bool, int>[] sortedPoints = new Tuple<PointOfInterest, int, bool, int>[points.Count()];
 
             // sorting the points based on distance to 0 ascending 
             // bubble sort
@@ -97,10 +96,10 @@ namespace TouringCars
             }
 
             // converting PointOfInterest[] to Tuple<PointOfInterest, int>[]
-            sortedPoints[0] = Tuple.Create(points[0], getDistanceBetweenPoints(new PointOfInterest("Start", new int[] { 0, 0 }, POIType.start), points[0]));
+            sortedPoints[0] = Tuple.Create(points[0], getDistanceBetweenPoints(new PointOfInterest("Start", new int[] { 0, 0 }, POIType.start), points[0]), false, 0);
             for (int i = 1; i < points.Count(); i++)
             {
-                sortedPoints[i] = Tuple.Create(points[i], getDistanceBetweenPoints(points[i - 1], points[i]));
+                sortedPoints[i] = Tuple.Create(points[i], getDistanceBetweenPoints(points[i - 1], points[i]), false, 0);
             }
             return sortedPoints;
         }
@@ -115,8 +114,9 @@ namespace TouringCars
             return "Finished route, well done!\n";
         }
 
-        public void arriveAtPoint()
+        public void arriveAtPoint(int usedFuel, PointOfInterest waypoint)
         {
+            this.waypoints[atWaypointNumber] = Tuple.Create(waypoint, waypoints[atWaypointNumber].Item2, true, usedFuel);
             this.atWaypointNumber++;
         }
     }

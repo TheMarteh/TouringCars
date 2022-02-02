@@ -19,13 +19,19 @@ namespace TouringCars
             foreach (Car car in carsToUse)
             {
                 result += $"Route van {car.owner}:\n";
-                var coords = car.route.getWaypointCoordinates();
+                // var coords = car.route.getWaypointCoordinates();
+                var drivenRoute = car.route.getDrivenRoute();
+
                 int i = 1;
-                foreach (var coordTuple in coords)
+                foreach (var point in drivenRoute)
                 {
-                    result += $"waypoint {i}: [{coordTuple.Item1}, {coordTuple.Item2}]. Distance to get here: {coordTuple.Item3}\n";
-                    i++;
+                    if (point.Item3)
+                    {
+                        result += $"waypoint {i}: [{point.Item1.locationX}, {point.Item1.locationY}]. Distance to get here: {point.Item2} km, Fuel used so far: {point.Item4}\n";
+                        i++;
+                    }
                 }
+                result += $"Driven in this route: {car.getKMDriven()} km\n";
                 result += $"Total route distance: {car.route.getLength().Item2} km\n";
             }
             return result += "\n";

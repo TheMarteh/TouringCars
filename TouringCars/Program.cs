@@ -63,7 +63,7 @@ namespace TouringCars
                 outputLog += a.avgRouteLength();
 
                 // Static Analyzer use
-                outputLog += a.plotRoute(new Car[] { tester });
+                outputLog += a.plotRoute(new Car[] { tester, driveTillTheSun });
             }
 
             Console.Write(outputLog);
