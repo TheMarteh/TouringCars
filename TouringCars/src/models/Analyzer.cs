@@ -15,7 +15,7 @@ namespace TouringCars
         public String plotRoute(Car[]? cars = null)
         {
             Car[] carsToUse = cars == null ? this.cars : cars;
-            String result = "Route Plotter v0.1\n";
+            String result = "      ##$$%%//   Route Plotter v0.1   \\\\%%$$##\n\n";
             foreach (Car car in carsToUse)
             {
                 result += $"Route van {car.owner}:\n";
@@ -27,14 +27,21 @@ namespace TouringCars
                 {
                     if (point.Item3)
                     {
-                        result += $"waypoint {i}: [{point.Item1.locationX}, {point.Item1.locationY}]. Distance to get here: {point.Item2} km, Fuel used so far: {point.Item4}\n";
+                        String p1 = $"waypoint {i}: [{point.Item1.locationX}, {point.Item1.locationY}].";
+                        String p2 = $"Distance to get here: {point.Item2} km, Fuel used so far: {point.Item4}\n";
+                        String devider = "";
+                        while (p1.Length + p2.Length + devider.Length < FixedParams.maxScreenWidth)
+                        {
+                            devider += " ";
+                        }
+                        result += p1 + devider + p2;
                         i++;
                     }
                 }
                 result += $"Driven in this route: {car.getKMDriven()} km\n";
-                result += $"Total route distance: {car.route.getLength().Item2} km\n";
+                result += $"Total route distance: {car.route.getLength().Item2} km\n\n";
             }
-            return result += "\n";
+            return result;
         }
 
         public void setCars(Car[] cars)
