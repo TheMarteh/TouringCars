@@ -76,9 +76,10 @@ namespace TouringCars
             int total = 0;
             for (int i = 0; i < waypoints.Count(); i++)
             {
-                total += waypoints[i].distanceToNextPoint;
-
-
+                if (waypoints[i].poi.type != POIType.terminator)
+                {
+                    total += waypoints[i].distanceToNextPoint;
+                }
             }
             return new Tuple<int, int>(waypoints.Count(), total);
         }

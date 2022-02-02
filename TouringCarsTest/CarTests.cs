@@ -70,79 +70,66 @@ namespace TouringCarsTests
         [TestMethod]
         public void distanceLowerMaxDistance()
         {
-            TesterCars testcars = new TesterCars(50, 10, 50);
+            TesterCars testcars = new TesterCars(50, 10, 1);
             testcars.go(showOutput: false);
             foreach (Car carToTest in testcars.getCars())
             {
                 if (carToTest.route.atWaypointNumber >= carToTest.route.countWaypoints())
                 {
-                    if (carToTest.getKMDriven() < carToTest.route.getLength().Item2)
-                    {
-                        System.Console.WriteLine("At waypoint " + carToTest.route.atWaypointNumber + "/" + carToTest.route.countWaypoints());
-                        System.Console.WriteLine("at or over finish" + carToTest.getKMDriven() + " of " + carToTest.route.getLength().Item2);
-                    }
+                    System.Console.WriteLine("At waypoint " + carToTest.route.atWaypointNumber + "/" + carToTest.route.countWaypoints());
+                    System.Console.WriteLine("at or over finish" + carToTest.getKMDriven() + " of " + carToTest.route.getLength().Item2);
                     Assert.IsTrue(carToTest.getKMDriven() >= carToTest.route.getLength().Item2, "Driven less than routelength!");
                 }
-                else if (carToTest.route.atWaypointNumber < carToTest.route.countWaypoints())
+                else
                 {
-                    if (carToTest.getKMDriven() > carToTest.route.getLength().Item2)
-                    {
-                        foreach (var waypoint in carToTest.route.getDrivenRoute())
-                        {
-                            System.Console.WriteLine(waypoint.poi.ToString());
-                            System.Console.WriteLine($"{waypoint.poi.name}: [{waypoint.poi.locationX},{waypoint.poi.locationY}]");
-                        }
-                        System.Console.WriteLine("At waypoint " + carToTest.route.atWaypointNumber + "/" + carToTest.route.countWaypoints());
-                        System.Console.WriteLine("stranded, driven " + carToTest.getKMDriven() + " of " + carToTest.route.getLength().Item2);
-                        System.Console.WriteLine($"{carToTest.route.getNextPoint().distanceToNextPoint}");
-                    }
+                    System.Console.WriteLine("At waypoint " + carToTest.route.atWaypointNumber + "/" + carToTest.route.countWaypoints());
+                    System.Console.WriteLine("stranded, driven " + carToTest.getKMDriven() + " of " + carToTest.route.getLength().Item2);
+                    System.Console.WriteLine($"{carToTest.route.getNextPoint().distanceToNextPoint}");
+
                     Assert.IsTrue(carToTest.getKMDriven() <= carToTest.route.getLength().Item2, "Driven more than routelength!");
                 }
             }
-
         }
-        [TestClass]
-        public class AnalyzerTests
+    }
+    [TestClass]
+    public class AnalyzerTests
+    {
+        [TestMethod]
+        public void AveragePerBrandTest()
         {
-            [TestMethod]
-            public void AveragePerBrandTest()
-            {
-                Car c1 = new Car("Sid", Automerken.Audi);
-                Car c2 = new Car("Tester", Automerken.Audi);
-                c1.getIn("Sid");
-                c2.getIn("Tester");
+            Car c1 = new Car("Sid", Automerken.Audi);
+            Car c2 = new Car("Tester", Automerken.Audi);
+            c1.getIn("Sid");
+            c2.getIn("Tester");
 
-                Analyzer a = new Analyzer(new Car[] { c1, c2 });
-                Tuple<Automerken, int, int, int>[] result = a.AvgSpeedPerBrand();
-                Tuple<Automerken, int, int, int> wantedResult = Tuple.Create(Automerken.Audi, 2, 0, 0);
-                Console.Write(result[0].ToString());
-                Console.Write(wantedResult.ToString());
-                Assert.IsTrue(result[0].ToString() == wantedResult.ToString() && result[0].Item2 == result[0].Item2, "Average Speed calculated incorrectly");
-            }
-
-
+            Analyzer a = new Analyzer(new Car[] { c1, c2 });
+            Tuple<Automerken, int, int, int>[] result = a.AvgSpeedPerBrand();
+            Tuple<Automerken, int, int, int> wantedResult = Tuple.Create(Automerken.Audi, 2, 0, 0);
+            Console.Write(result[0].ToString());
+            Console.Write(wantedResult.ToString());
+            Assert.IsTrue(result[0].ToString() == wantedResult.ToString() && result[0].Item2 == result[0].Item2, "Average Speed calculated incorrectly");
         }
-        [TestClass]
-        public class RouteTests
+    }
+    [TestClass]
+    public class RouteTests
+    {
+        [TestMethod]
+        public void distanceTest()
         {
-            [TestMethod]
-            public void distanceTest()
-            {
-                PointOfInterest p1 = new PointOfInterest("p1", new int[] { 1, 1 });
-                PointOfInterest p2 = new PointOfInterest("p2", new int[] { 4, 5 });
-                System.Console.WriteLine($"Input: {p2.locationX} - {p1.locationX}, {p2.locationY} - {p1.locationY}");
-                int result = Route.getDistanceBetweenPoints(p1, p2);
-                System.Console.WriteLine($"Input: {p2.locationX - p1.locationX}, {p2.locationY - p1.locationY}");
-                System.Console.WriteLine(result);
-                Assert.IsTrue(result == 5, "Calculating distance test went wrong.");
-            }
-
-            public void lenShouldBe0()
-            {
-                Route route = new Route();
-                Assert.IsTrue(route.getLength().Item2 == 0, "Final routelength when not adding points is not 0");
-            }
+            PointOfInterest p1 = new PointOfInterest("p1", new int[] { 1, 1 });
+            PointOfInterest p2 = new PointOfInterest("p2", new int[] { 4, 5 });
+            System.Console.WriteLine($"Input: {p2.locationX} - {p1.locationX}, {p2.locationY} - {p1.locationY}");
+            int result = Route.getDistanceBetweenPoints(p1, p2);
+            System.Console.WriteLine($"Input: {p2.locationX - p1.locationX}, {p2.locationY - p1.locationY}");
+            System.Console.WriteLine(result);
+            Assert.IsTrue(result == 5, "Calculating distance test went wrong.");
         }
 
+        [TestMethod]
+        public void lenShouldBe0()
+        {
+            Route route = new Route();
+            Assert.IsTrue(route.getLength().Item2 == 0, "Final routelength when not adding points is not 0");
+        }
     }
 }
