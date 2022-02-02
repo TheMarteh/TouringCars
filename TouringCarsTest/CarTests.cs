@@ -70,25 +70,16 @@ namespace TouringCarsTests
         [TestMethod]
         public void distanceLowerMaxDistance()
         {
+            Boolean result = true;
             TesterCars testcars = new TesterCars(50, 10, 1);
             testcars.go(showOutput: false);
             foreach (Car carToTest in testcars.getCars())
             {
-                if (carToTest.route.atWaypointNumber >= carToTest.route.countWaypoints())
-                {
-                    System.Console.WriteLine("At waypoint " + carToTest.route.atWaypointNumber + "/" + carToTest.route.countWaypoints());
-                    System.Console.WriteLine("at or over finish" + carToTest.getKMDriven() + " of " + carToTest.route.getLength().Item2);
-                    Assert.IsTrue(carToTest.getKMDriven() >= carToTest.route.getLength().Item2, "Driven less than routelength!");
-                }
-                else
-                {
-                    System.Console.WriteLine("At waypoint " + carToTest.route.atWaypointNumber + "/" + carToTest.route.countWaypoints());
-                    System.Console.WriteLine("stranded, driven " + carToTest.getKMDriven() + " of " + carToTest.route.getLength().Item2);
-                    System.Console.WriteLine($"{carToTest.route.getNextPoint().distanceToNextPoint}");
-
-                    Assert.IsTrue(carToTest.getKMDriven() <= carToTest.route.getLength().Item2, "Driven more than routelength!");
-                }
+                Boolean b1 = (carToTest.route.atWaypointNumber >= carToTest.route.countWaypoints() && carToTest.getKMDriven() >= carToTest.route.getLength().Item2);
+                Boolean b2 = (carToTest.route.atWaypointNumber < carToTest.route.countWaypoints() && carToTest.getKMDriven() < carToTest.route.getLength().Item2);
+                result = (result && (b1 || b2));
             }
+            Assert.IsTrue(result, "Driven a wrong amount!");
         }
     }
     [TestClass]
