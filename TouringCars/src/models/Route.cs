@@ -3,14 +3,12 @@ namespace TouringCars
     public class Route
     {
         private Tuple<PointOfInterest, int, bool, int>[] waypoints;
-        private Tuple<PointOfInterest, int, int>[] drivenRoute;
         public bool hasFinished;
         public int atWaypointNumber;
 
         public Route(PointOfInterest[] points) : this()
         {
             this.waypoints = this.planRoute(points);
-            this.drivenRoute = new Tuple<PointOfInterest, int, int>[waypoints.Count()];
         }
         public Route()
         {
@@ -20,7 +18,6 @@ namespace TouringCars
             this.waypoints = new Tuple<PointOfInterest, int, bool, int>[] { Tuple.Create(p1, 0, false, 0), Tuple.Create(p2, int.MaxValue, false, 0) };
             this.hasFinished = false;
             this.atWaypointNumber = 0;
-            this.drivenRoute = new Tuple<PointOfInterest, int, int>[waypoints.Count()];
         }
 
         public Tuple<int, int> getLength()
@@ -55,7 +52,7 @@ namespace TouringCars
 
         public int countWaypoints()
         {
-            return waypoints.Length;
+            return waypoints.Count();
         }
 
         public Tuple<PointOfInterest, int, bool, int> getNextPoint()
@@ -67,7 +64,7 @@ namespace TouringCars
             }
             // only happens when there was no finish and the route has run out.
             this.atWaypointNumber--;
-            return Tuple.Create(new PointOfInterest("Route has finished", new int[] { -1, -1 }, POIType.terminator), 0, false, 0);
+            return Tuple.Create(new PointOfInterest("Route has finished", new int[] { this.waypoints[atWaypointNumber].Item1.locationX, this.waypoints[atWaypointNumber].Item1.locationY }, POIType.terminator), 0, false, 0);
         }
 
         private Tuple<PointOfInterest, int, bool, int>[] planRoute(PointOfInterest[] points)

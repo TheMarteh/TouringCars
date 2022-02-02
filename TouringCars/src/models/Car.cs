@@ -61,7 +61,7 @@ namespace TouringCars
                         distanceToNext -= res.Item2;
                         result += res.Item1;
                     }
-                    if (this.fuel <= 0)
+                    if (this.fuel <= 0 && distanceToNext > 0)
                     {
                         result += this.route.getStranded();
                         // break;
@@ -70,7 +70,7 @@ namespace TouringCars
                     {
                         this.route.arriveAtPoint(this.fuelUsed, next.Item1);
                         // offset the overshoot
-                        // this.kmDriven += distanceToNext;
+                        this.kmDriven += distanceToNext;
                         switch (next.Item1.type)
                         {
                             case POIType.start:
