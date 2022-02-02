@@ -46,7 +46,7 @@ namespace TouringCars
         public String handlePointCallback(ValueChanger v)
         {
             String result = "";
-            result += this.addFuel(v.fuelToChange).Item1;
+            result += v.fuelToChange != 0 ? this.addFuel(v.fuelToChange).Item1 : "";
 
             if (v.isFinished)
             {
