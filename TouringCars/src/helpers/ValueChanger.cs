@@ -8,6 +8,7 @@ namespace TouringCars
         public int famineToChange;
         public int sleepToChange;
         public bool isFinished;
+
         public ValueChanger(int fuelToChange, int costToChange, int famineToChange, int sleepToChange, bool isFinished)
         {
             this.fuelToChange = fuelToChange;

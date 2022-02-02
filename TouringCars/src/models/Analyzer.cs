@@ -39,7 +39,8 @@ namespace TouringCars
                     }
                 }
                 result += $"Driven in this route: {car.getKMDriven()} km\n";
-                result += $"Total route distance: {car.route.getLength().Item2} km\n\n";
+                int conditionalDistance = car.route.getLength().Item2 < int.MaxValue ? car.route.getLength().Item2 : 0;
+                result += $"Total route distance: {conditionalDistance} km\n\n";
             }
             return result;
         }
