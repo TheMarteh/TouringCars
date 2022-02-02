@@ -1,5 +1,20 @@
 namespace TouringCars
 {
+    public class RoutePoint
+    {
+        public PointOfInterest poi;
+        public int distanceToNextPoint;
+        public Boolean hasReached;
+        public int fuelUsedSoFar;
+
+        public RoutePoint(PointOfInterest poi, int distaneToNextPoint, Boolean hasReached, int fuelUsedSoFar)
+        {
+            this.poi = poi;
+            this.distanceToNextPoint = distanceToNextPoint;
+            this.hasReached = hasReached;
+            this.fuelUsedSoFar = fuelUsedSoFar;
+        }
+    }
     public class Route
     {
         private Tuple<PointOfInterest, int, bool, int>[] waypoints;
