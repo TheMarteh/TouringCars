@@ -68,9 +68,11 @@ namespace TouringCars
                     }
                     else if (!route.hasFinished)
                     {
-                        this.route.arriveAtPoint(this.fuelUsed, next.poi);
                         // offset the overshoot
                         this.kmDriven += distanceToNext;
+
+                        this.route.arriveAtPoint(this.fuelUsed, next.poi);
+
                         switch (next.poi.type)
                         {
                             case POIType.start:

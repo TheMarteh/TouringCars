@@ -68,7 +68,10 @@ namespace TouringCars
                 // starting the drive
                 this.output += car.getIn(car.owner, showOutput);
                 this.output += car.go(showOutput);
-                this.output += car.printSummary(showOutput);
+
+                // change addToLog to true to print the summary after an individual testcar has driven. Defaults to false
+                // because we will print out all the summaries at once in the output log creation stage. 
+                this.output += car.printSummary(addToLog: false);
             }
         }
 
@@ -78,7 +81,6 @@ namespace TouringCars
         }
         public String getOutput()
         {
-
             foreach (Car car in cars)
             {
                 this.output += car.printSummary(FixedParams.createLogFile);

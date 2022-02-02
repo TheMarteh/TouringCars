@@ -128,7 +128,8 @@ namespace TouringCars
 
         public void arriveAtPoint(int usedFuel, PointOfInterest waypoint)
         {
-            this.waypoints[atWaypointNumber] = new RoutePoint(waypoint, waypoints[atWaypointNumber].distanceToNextPoint, true, usedFuel);
+            this.waypoints[atWaypointNumber].hasReached = true;
+            this.waypoints[atWaypointNumber].fuelUsedSoFar = usedFuel;
             this.atWaypointNumber++;
         }
     }
