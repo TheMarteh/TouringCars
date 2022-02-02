@@ -10,13 +10,18 @@ namespace TouringCars
         public static void Main()
         {
             // initializing outputlog
-            Analyzer a = new Analyzer();
             String outputLog = "";
+            Car[] logCars;
 
             // setting and running the testcars
+            // these are the cars that respond to the variables in Config.cs
             TesterCars testcars = new TesterCars();
             testcars.go(showOutput: true);
 
+
+            // Start typing your code here //
+
+            // example 
             // manually entered waypoints with specified type and location
             PointOfInterest p1 = new PointOfInterest("Benzinepomp", new int[] { 46, 23 }, POIType.gas_station);
             PointOfInterest p2 = new PointOfInterest("McDonalds", new int[] { 88, 55 }, POIType.food);
@@ -28,18 +33,17 @@ namespace TouringCars
             // instantiating the route
             Route tour = new Route(points);
 
-            // instantiating a single car object
+            // instantiating a single car object with a brand and setting our custom route
             Car tester = new Car("Fred", Automerken.Ferrari) { route = tour };
 
             // starting the drive without the owner entering the car will not work.
             tester.go(); // will not work, as the car first needs to be unlocked
 
-            // getting in the car to start it
+            // getting in the car to unlock it
             outputLog += tester.getIn(tester.owner, showOverride: true);
 
-            // starting the route
+            // starting the car along the route
             outputLog += tester.go(showOverride: true);
-
 
             // a car can also drive without a route:
             Car driveTillTheSun = new Car("Pietje");
@@ -47,7 +51,21 @@ namespace TouringCars
             outputLog += driveTillTheSun.go(showOverride: true);
 
             // printing output
+            Analyzer a = new Analyzer();
             a.setCars(testcars.getCars());
+
+
+
+            // add your Cars here //
+            logCars = new Car[] {
+                tester,
+                driveTillTheSun,
+                testcars.getCars()[0],
+                };
+
+
+
+            // creating logs
             if (FixedParams.createLogFile)
             {
                 // testcar output
@@ -63,7 +81,7 @@ namespace TouringCars
                 outputLog += a.avgRouteLength();
 
                 // Static Analyzer use
-                outputLog += a.plotRoute(new Car[] { tester, driveTillTheSun });
+                outputLog += a.plotRoute(logCars);
             }
 
             Console.Write(outputLog);
