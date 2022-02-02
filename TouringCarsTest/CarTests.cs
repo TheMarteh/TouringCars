@@ -71,7 +71,7 @@ namespace TouringCarsTests
         public void distanceLowerMaxDistance()
         {
             Boolean result = true;
-            TesterCars testcars = new TesterCars(50, 10, 1);
+            TesterCars testcars = new TesterCars(50, 10, 10);
             testcars.go(showOutput: false);
             foreach (Car carToTest in testcars.getCars())
             {

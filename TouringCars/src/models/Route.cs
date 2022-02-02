@@ -28,25 +28,28 @@ namespace TouringCars
                 case POIType.start:
                     result += "Start: Let\'s go!\n";
                     valueChanger = new ValueChanger(0, 0, 0, 0, false);
-                    break;
+                    return Tuple.Create(result, valueChanger);
                 case POIType.terminator:
                     valueChanger = new ValueChanger(0, 0, 0, 0, true);
-                    break;
+                    return Tuple.Create(result, valueChanger);
                 case POIType.gas_station:
                     valueChanger = new ValueChanger(this.poi.value, this.poi.cost, 0, 0, false);
                     result += $"Arrived at waypoint {this.poi.name} at {this.distanceToNextPoint}km!\nFuel left: {fuelLeft}\n";
-                    break;
+                    return Tuple.Create(result, valueChanger);
                 case POIType.food:
                     valueChanger = new ValueChanger(0, this.poi.cost, this.poi.value, 0, false);
                     result += $"Arrived at waypoint {this.poi.name} at {this.distanceToNextPoint}km!\nFuel left: {fuelLeft}\n";
                     result += "Nom nom, lekker eten\n";
-                    break;
+                    return Tuple.Create(result, valueChanger);
                 default:
                     valueChanger = new ValueChanger(0, 0, 0, 0, false);
                     result += $"Arrived at waypoint {this.poi.name} at {this.distanceToNextPoint}km!\nFuel left: {fuelLeft}\n";
-                    break;
+                    return Tuple.Create(result, valueChanger);
             }
-            return Tuple.Create(result, valueChanger);
+        }
+        public void setTerminator()
+        {
+            this.poi.type = POIType.terminator;
         }
     }
 
@@ -121,7 +124,7 @@ namespace TouringCars
         private RoutePoint[] planRoute(PointOfInterest[] points)
         {
             // initializing the final list as a Tuple<PointOfInterest, bool> array
-            RoutePoint[] sortedPoints = new RoutePoint[points.Count()];
+            RoutePoint[] sortedPoints = new RoutePoint[points.Length];
 
             // sorting the points based on distance to 0 ascending 
             // bubble sort
@@ -145,10 +148,11 @@ namespace TouringCars
 
             // converting PointOfInterest[] to Tuple<PointOfInterest, int>[]
             sortedPoints[0] = new RoutePoint(points[0], getDistanceBetweenPoints(new PointOfInterest("Start", new int[] { 0, 0 }, POIType.start), points[0]), false, 0);
-            for (int i = 1; i < points.Count(); i++)
+            for (int i = 1; i < points.Length; i++)
             {
                 sortedPoints[i] = new RoutePoint(points[i], getDistanceBetweenPoints(points[i - 1], points[i]), false, 0);
             }
+            sortedPoints[points.Length - 1].setTerminator();
             return sortedPoints;
         }
         public String getStranded()
