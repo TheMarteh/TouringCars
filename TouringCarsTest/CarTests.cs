@@ -75,8 +75,9 @@ namespace TouringCarsTests
             testcars.go(showOutput: false);
             foreach (Car carToTest in testcars.getCars())
             {
-                Boolean b1 = (carToTest.route.atWaypointNumber >= carToTest.route.countWaypoints() && carToTest.getKMDriven() >= carToTest.route.getLength().Item2);
-                Boolean b2 = (carToTest.route.atWaypointNumber < carToTest.route.countWaypoints() && carToTest.getKMDriven() < carToTest.route.getLength().Item2);
+                int routelength = carToTest.route.getLength().Item2;
+                Boolean b1 = (carToTest.route.atWaypointNumber >= carToTest.route.countWaypoints() && carToTest.getKMDriven() >= routelength);
+                Boolean b2 = (carToTest.route.atWaypointNumber < carToTest.route.countWaypoints() && carToTest.getKMDriven() < routelength);
                 result = (result && (b1 || b2));
             }
             Assert.IsTrue(result, "Driven a wrong amount!");

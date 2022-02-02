@@ -67,7 +67,7 @@ namespace TouringCars
                 {
                     var next = route.getNextPoint();
                     int distanceToNext = next.distanceToNextPoint;
-                    while (distanceToNext >= 0 && !this.route.hasFinished && fuel > 0)
+                    while (distanceToNext > 0 && !this.route.hasFinished && fuel > 0)
                     {
                         var res = this.drive();
                         distanceToNext -= res.Item2;
