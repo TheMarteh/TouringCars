@@ -5,18 +5,20 @@ namespace TouringCars
     {
         private RoutePoint[] waypoints;
         public bool hasFinished;
+        public bool useZeroPointAsStart;
         public int atWaypointNumber;
         private Sorter sorter;
 
-        public Route(PointOfInterest[] points, Sorter sorter = Sorter.no_sorter) : this(sorter)
+        public Route(PointOfInterest[] points, Sorter sorter = Sorter.no_sorter, bool useZeroPointAsStart = true) : this(sorter, useZeroPointAsStart)
         {
             this.waypoints = this.planRoute(points);
         }
-        public Route(Sorter sorter = Sorter.no_sorter)
+        public Route(Sorter sorter = Sorter.no_sorter, bool useZeroPointAsStart = true)
         {
             PointOfInterest p1 = new PointOfInterest("No route added", new int[] { 0, 0 }, POIType.start);
             PointOfInterest p2 = new PointOfInterest("No route added", new int[] { int.MaxValue, int.MaxValue }, POIType.terminator);
 
+            this.useZeroPointAsStart = useZeroPointAsStart;
             this.sorter = sorter;
             this.waypoints = new RoutePoint[] { new RoutePoint(0, p1, 0, false, 0), new RoutePoint(1, p2, int.MaxValue, false, 0) };
             this.hasFinished = false;
@@ -76,20 +78,30 @@ namespace TouringCars
             // TODO: Build navigator.
             // Sorting breaks with locationX and locationY. For now just sorting by locationX
 
+            PointOfInterest[] sortedPoints = sortPoints(points);
+            RoutePoint[] plannedPoints;
 
+            int plannedPointsSize = useZeroPointAsStart ? sortedPoints.Length : sortedPoints.Length;
+            plannedPoints = new RoutePoint[plannedPointsSize];
 
-            RoutePoint[] sortedPoints = new RoutePoint[points.Length + 1];
-
-            sortedPoints[0] = new RoutePoint(0, new PointOfInterest("Start", new int[] { 0, 0 }, POIType.start), 0, false, 0);
+            if (useZeroPointAsStart)
+            {
+                plannedPoints[0] = new RoutePoint(0, new PointOfInterest("Start", new int[] { 0, 0 }, POIType.start), 0, false, 0);
+            }
+            else
+            {
+                plannedPoints = new RoutePoint[sortedPoints.Length];
+                plannedPoints[0] = new RoutePoint(0, new PointOfInterest(sortedPoints[0].name, new int[] { sortedPoints[0].locationX, sortedPoints[0].locationY }, POIType.start), 0, false, 0);
+            }
             for (int i = 1; i < sortedPoints.Length; i++)
             {
-                sortedPoints[i] = new RoutePoint(i, points[i - 1], getDistanceBetweenPoints(sortedPoints[i - 1].poi, points[i - 1]), false, 0);
+                plannedPoints[i] = new RoutePoint(i, sortedPoints[i - 1], getDistanceBetweenPoints(plannedPoints[i - 1].poi, sortedPoints[i - 1]), false, 0);
             }
-            sortedPoints.Last().setTerminator();
-            return sortedPoints;
+            plannedPoints.Last().setTerminator();
+            return plannedPoints;
         }
 
-        PointOfInterest[] Sort(PointOfInterest[] points)
+        PointOfInterest[] sortPoints(PointOfInterest[] points)
         {
             switch (sorter)
             {

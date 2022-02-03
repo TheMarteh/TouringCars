@@ -36,7 +36,7 @@ namespace TouringCars
              };
 
             // instantiating the route
-            Route tour = new Route(points);
+            Route tour = new Route(points, useZeroPointAsStart: true);
 
             // instantiating a single car object with a brand and setting our custom route
             Car tester = new Car("Fred", Automerken.Ferrari) { route = tour };
