@@ -9,12 +9,30 @@ namespace TouringCars
         private int WaypointsToUse;
         private int carAmount;
 
+        public TesterCars(PointOfInterest[] testPoints, int customWaypoints, int customRouteLength, int customCarAmount)
+        {
+            this.carAmount = customCarAmount;
+            this.WaypointsToUse = customRouteLength;
+            this.waypointsToMake = customWaypoints;
+            this.testPoints = testPoints;
+            this.cars = createTestCars();
+            this.output = "";
+        }
         public TesterCars(int customWaypoints, int customRouteLength, int customCarAmount)
         {
             this.carAmount = customCarAmount;
             this.WaypointsToUse = customRouteLength;
             this.waypointsToMake = customWaypoints;
             this.testPoints = createTestPoints();
+            this.cars = createTestCars();
+            this.output = "";
+        }
+        public TesterCars(PointOfInterest[] testPoints)
+        {
+            this.carAmount = WorkingParams.testCars;
+            this.waypointsToMake = WorkingParams.wayPoints;
+            this.WaypointsToUse = WorkingParams.routePoints;
+            this.testPoints = testPoints;
             this.cars = createTestCars();
             this.output = "";
         }
@@ -27,6 +45,8 @@ namespace TouringCars
             this.cars = createTestCars();
             this.output = "";
         }
+
+
 
         private PointOfInterest[] createTestPoints()
         {

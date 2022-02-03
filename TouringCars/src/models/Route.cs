@@ -1,75 +1,23 @@
 namespace TouringCars
 {
-    public class RoutePoint
-    {
-        public PointOfInterest poi;
-        public int id;
-        public int distanceToNextPoint;
-        public Boolean hasReached;
-        public int fuelUsedSoFar;
-
-        public RoutePoint(int id, PointOfInterest poi, int distanceToNextPoint, Boolean hasReached, int fuelUsedSoFar)
-        {
-            this.id = id;
-            this.poi = poi;
-            this.distanceToNextPoint = distanceToNextPoint;
-            this.hasReached = hasReached;
-            this.fuelUsedSoFar = fuelUsedSoFar;
-        }
-
-        public Tuple<String, ValueChanger> arriveAtPoint(int usedFuel, int fuelLeft)
-        {
-            this.hasReached = true;
-            this.fuelUsedSoFar = usedFuel;
-
-            String result = "";
-            ValueChanger valueChanger;
-
-            switch (this.poi.type)
-            {
-                case POIType.start:
-                    result += "Start: Let\'s go!\n";
-                    valueChanger = new ValueChanger(0, 0, 0, 0, false);
-                    return Tuple.Create(result, valueChanger);
-                case POIType.terminator:
-                    valueChanger = new ValueChanger(0, 0, 0, 0, true);
-                    return Tuple.Create(result, valueChanger);
-                case POIType.gas_station:
-                    valueChanger = new ValueChanger(this.poi.value, this.poi.cost, 0, 0, false);
-                    result += $"Arrived at waypoint {this.poi.name} at {this.distanceToNextPoint}km!\nFuel left: {fuelLeft}\n";
-                    return Tuple.Create(result, valueChanger);
-                case POIType.food:
-                    valueChanger = new ValueChanger(0, this.poi.cost, this.poi.value, 0, false);
-                    result += $"Arrived at waypoint {this.poi.name} at {this.distanceToNextPoint}km!\nFuel left: {fuelLeft}\n";
-                    result += "Nom nom, lekker eten\n";
-                    return Tuple.Create(result, valueChanger);
-                default:
-                    valueChanger = new ValueChanger(0, 0, 0, 0, false);
-                    result += $"Arrived at waypoint {this.poi.name} at {this.distanceToNextPoint}km!\nFuel left: {fuelLeft}\n";
-                    return Tuple.Create(result, valueChanger);
-            }
-        }
-        public void setTerminator()
-        {
-            this.poi.type = POIType.terminator;
-        }
-    }
 
     public class Route
     {
         private RoutePoint[] waypoints;
         public bool hasFinished;
         public int atWaypointNumber;
+        private Sorter sorter;
 
-        public Route(PointOfInterest[] points) : this()
+        public Route(PointOfInterest[] points, Sorter sorter = Sorter.no_sorter) : this(sorter)
         {
             this.waypoints = this.planRoute(points);
         }
-        public Route()
+        public Route(Sorter sorter = Sorter.no_sorter)
         {
             PointOfInterest p1 = new PointOfInterest("No route added", new int[] { 0, 0 }, POIType.start);
             PointOfInterest p2 = new PointOfInterest("No route added", new int[] { int.MaxValue, int.MaxValue }, POIType.terminator);
 
+            this.sorter = sorter;
             this.waypoints = new RoutePoint[] { new RoutePoint(0, p1, 0, false, 0), new RoutePoint(1, p2, int.MaxValue, false, 0) };
             this.hasFinished = false;
             this.atWaypointNumber = 0;
@@ -122,7 +70,6 @@ namespace TouringCars
         private RoutePoint[] planRoute(PointOfInterest[] points)
         {
             // initializing the final list as a Tuple<PointOfInterest, bool> array
-            RoutePoint[] sortedPoints = new RoutePoint[points.Length + 1];
 
             // sorting the points based on distance to 0 ascending 
             // bubble sort
@@ -130,6 +77,52 @@ namespace TouringCars
             // Sorting breaks with locationX and locationY. For now just sorting by locationX
 
 
+
+            RoutePoint[] sortedPoints = new RoutePoint[points.Length + 1];
+
+            sortedPoints[0] = new RoutePoint(0, new PointOfInterest("Start", new int[] { 0, 0 }, POIType.start), 0, false, 0);
+            for (int i = 1; i < sortedPoints.Length; i++)
+            {
+                sortedPoints[i] = new RoutePoint(i, points[i - 1], getDistanceBetweenPoints(sortedPoints[i - 1].poi, points[i - 1]), false, 0);
+            }
+            sortedPoints.Last().setTerminator();
+            return sortedPoints;
+        }
+
+        PointOfInterest[] Sort(PointOfInterest[] points)
+        {
+            switch (sorter)
+            {
+                case Sorter.bubbleSort:
+                    return bubbleSort(points);
+                case Sorter.no_sorter:
+                    return noSort(points);
+                default:
+                    return randomSort(points);
+            }
+        }
+
+        PointOfInterest[] noSort(PointOfInterest[] points)
+        {
+            return points;
+        }
+
+        PointOfInterest[] randomSort(PointOfInterest[] points)
+        {
+            PointOfInterest temp;
+            int random = new Random().Next(0, 10);
+            PointOfInterest[] randompoints = new PointOfInterest[points.Length];
+            for (int i = 0; i < points.Length; i++)
+            {
+
+            }
+            return randompoints;
+        }
+
+
+
+        private PointOfInterest[] bubbleSort(PointOfInterest[] points)
+        {
             PointOfInterest temp;
             for (int j = 0; j <= points.Length - 2; j++)
             {
@@ -143,14 +136,7 @@ namespace TouringCars
                     }
                 }
             }
-
-            sortedPoints[0] = new RoutePoint(0, new PointOfInterest("Start", new int[] { 0, 0 }, POIType.start), 0, false, 0);
-            for (int i = 1; i < sortedPoints.Length; i++)
-            {
-                sortedPoints[i] = new RoutePoint(i, points[i - 1], getDistanceBetweenPoints(sortedPoints[i - 1].poi, points[i - 1]), false, 0);
-            }
-            sortedPoints.Last().setTerminator();
-            return sortedPoints;
+            return points;
         }
         public String getStranded()
         {

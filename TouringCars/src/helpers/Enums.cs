@@ -18,4 +18,11 @@ namespace TouringCars
         terminator,
         start,
     }
+    public enum Sorter
+    {
+        no_sorter,
+
+        bubbleSort
+
+    }
 }

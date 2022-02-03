@@ -11,7 +11,7 @@ namespace TouringCars
         // the amount of used waypoints for a route
         public static int routePoints = 20;
         // the maximum distance a randomly generated waypoint is away from 0
-        public static int maxDistance = 10;
+        public static int maxDistance = 20;
 
     }
 

@@ -22,12 +22,18 @@ namespace TouringCars
 
             // example 
             // manually entered waypoints with specified type and location
-            PointOfInterest p1 = new PointOfInterest("Benzinepomp", new int[] { 1, 3 }, POIType.gas_station);
-            PointOfInterest p2 = new PointOfInterest("McDonalds", new int[] { 6, 1 }, POIType.food);
-            PointOfInterest p3 = new PointOfInterest("Coolblue", new int[] { 5, 8 }, POIType.work);
-            PointOfInterest p4 = new PointOfInterest("Passing Shot", new int[] { 2, 7 }, POIType.hangout);
-            PointOfInterest p5 = new PointOfInterest("Vrienden Live", new int[] { 3, 5 }, POIType.hangout);
-            PointOfInterest[] points = new PointOfInterest[] { p1, p2, p3, p4, p5 };
+            PointOfInterest[] points = new PointOfInterest[] {
+                new PointOfInterest("Shell", new int[] { 1, 13 }, POIType.gas_station),
+                new PointOfInterest("McDonalds", new int[] { 9, 12 }, POIType.food),
+                new PointOfInterest("Albert Heijn", new int[] { 11, 2 }, POIType.food),
+                new PointOfInterest("Google HQ", new int[] { 18, 5 }, POIType.work),
+                new PointOfInterest("Coolblue", new int[] { 4, 8 }, POIType.work),
+                new PointOfInterest("Passing Shot", new int[] { 12, 17 }, POIType.hangout),
+                new PointOfInterest("Vrienden Live", new int[] { 6, 3 }, POIType.hangout),
+                new PointOfInterest("Coolsingel", new int[] { 18, 13 }, POIType.hangout),
+                new PointOfInterest("BP", new int[] { 17, 15 }, POIType.gas_station),
+                new PointOfInterest("Erasmus University", new int[] { 11, 12 }, POIType.hangout),
+             };
 
             // instantiating the route
             Route tour = new Route(points);
@@ -58,8 +64,8 @@ namespace TouringCars
             // add your Cars here //
             logCars = new Car[] {
                 tester,
-                driveTillTheSun,
-                testcars.getCars()[0],
+                // driveTillTheSun,
+                // testcars.getCars()[0],
                 };
 
 
