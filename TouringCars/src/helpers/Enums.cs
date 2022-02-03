@@ -22,7 +22,8 @@ namespace TouringCars
     {
         no_sorter,
 
-        bubbleSort
+        bubbleSort,
+        randomSort,
 
     }
 }

@@ -22,7 +22,7 @@ namespace TouringCars
         // the amount of fuel a car starts with by default
         public static int startingFuel = 25;
         // determines whether to create a log file.
-        public static bool createLogFile = true;
+        public static bool createLogFile = false;
         // Maximum screen width to occupy
         public static int maxScreenWidth = 80;
         //

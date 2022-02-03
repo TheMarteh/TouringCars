@@ -4,12 +4,12 @@ namespace TouringCars
     {
         Car[] cars = new Car[0];
         int n = 0;
-        public Analyzer(Car[] carsToAnalyze) : this()
+        public Analyzer(Car[]? carsToAnalyze = null)
         {
-            this.setCars(carsToAnalyze);
-        }
-        public Analyzer()
-        {
+            if (carsToAnalyze != null)
+            {
+                this.setCars(carsToAnalyze);
+            }
         }
 
         public String plotRoute(Car[]? cars = null)

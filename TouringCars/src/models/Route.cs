@@ -8,19 +8,24 @@ namespace TouringCars
         public bool useZeroPointAsStart;
         public int atWaypointNumber;
         private Sorter sorter;
+        private Random rng;
 
-        public Route(PointOfInterest[] points, Sorter sorter = Sorter.no_sorter, bool useZeroPointAsStart = true) : this(sorter, useZeroPointAsStart)
+        public Route(PointOfInterest[]? points = null, Sorter? sorter = null, bool? useZeroPointAsStart = null, int? seed = null)
         {
-            this.waypoints = this.planRoute(points);
-        }
-        public Route(Sorter sorter = Sorter.no_sorter, bool useZeroPointAsStart = true)
-        {
-            PointOfInterest p1 = new PointOfInterest("No route added", new int[] { 0, 0 }, POIType.start);
-            PointOfInterest p2 = new PointOfInterest("No route added", new int[] { int.MaxValue, int.MaxValue }, POIType.terminator);
+            if (points != null)
+            {
+                this.waypoints = this.planRoute(points);
+            }
+            else
+            {
+                PointOfInterest p1 = new PointOfInterest("No route added", new int[] { 0, 0 }, POIType.start);
+                PointOfInterest p2 = new PointOfInterest("No route added", new int[] { int.MaxValue, int.MaxValue }, POIType.terminator);
+                this.waypoints = new RoutePoint[] { new RoutePoint(0, p1, 0, false, 0), new RoutePoint(1, p2, int.MaxValue, false, 0) };
+            }
+            this.sorter = (Sorter)((sorter != null) ? sorter : (Sorter)Sorter.randomSort);
+            this.rng = (seed != null) ? new Random((int)seed) : new Random(Guid.NewGuid().GetHashCode());
+            this.useZeroPointAsStart = (useZeroPointAsStart != null) ? false : true;
 
-            this.useZeroPointAsStart = useZeroPointAsStart;
-            this.sorter = sorter;
-            this.waypoints = new RoutePoint[] { new RoutePoint(0, p1, 0, false, 0), new RoutePoint(1, p2, int.MaxValue, false, 0) };
             this.hasFinished = false;
             this.atWaypointNumber = 0;
         }
@@ -109,8 +114,10 @@ namespace TouringCars
                     return bubbleSort(points);
                 case Sorter.no_sorter:
                     return noSort(points);
-                default:
+                case Sorter.randomSort:
                     return randomSort(points);
+                default:
+                    return noSort(points);
             }
         }
 
@@ -119,18 +126,26 @@ namespace TouringCars
             return points;
         }
 
-        PointOfInterest[] randomSort(PointOfInterest[] points)
+        public PointOfInterest[] randomSort(PointOfInterest[] points)
         {
-            PointOfInterest temp;
-            int random = new Random().Next(0, 10);
+            Random rng = this.rng;
             PointOfInterest[] randompoints = new PointOfInterest[points.Length];
-            for (int i = 0; i < points.Length; i++)
+            int n = points.Length;
+            while (n > 1)
             {
-
+                int k = rng.Next(n--);
+                PointOfInterest temp = points[n];
+                points[n] = points[k];
+                points[k] = temp;
+            }
+            randompoints = points;
+            // debug
+            if (points.Last().locationX == 11)
+            {
+                System.Console.WriteLine("Sorting made last element the same as previous last!");
             }
             return randompoints;
         }
-
 
 
         private PointOfInterest[] bubbleSort(PointOfInterest[] points)

@@ -12,10 +12,7 @@ namespace TouringCars
             String outputLog = "";
             Car[] logCars;
 
-            // setting and running the testcars
-            // these are the cars that respond to the variables in Config.cs
-            TesterCars testcars = new TesterCars();
-            testcars.go(showOutput: true);
+
 
 
             // Start typing your code here //
@@ -25,7 +22,7 @@ namespace TouringCars
             PointOfInterest[] points = new PointOfInterest[] {
                 new PointOfInterest("Shell", new int[] { 1, 13 }, POIType.gas_station),
                 new PointOfInterest("McDonalds", new int[] { 9, 12 }, POIType.food),
-                new PointOfInterest("Albert Heijn", new int[] { 11, 2 }, POIType.food),
+                new PointOfInterest("Albert Heijn", new int[] { 10, 2 }, POIType.food),
                 new PointOfInterest("Google HQ", new int[] { 18, 5 }, POIType.work),
                 new PointOfInterest("Coolblue", new int[] { 4, 8 }, POIType.work),
                 new PointOfInterest("Passing Shot", new int[] { 12, 17 }, POIType.hangout),
@@ -36,7 +33,12 @@ namespace TouringCars
              };
 
             // instantiating the route
-            Route tour = new Route(points, useZeroPointAsStart: true);
+            Route tour = new Route(points, useZeroPointAsStart: true, sorter: Sorter.randomSort);
+
+            // setting and running the testcars
+            // these are the cars that respond to the variables in Config.cs
+            TesterCars testcars = new TesterCars(points);
+            testcars.go(showOutput: true);
 
             // instantiating a single car object with a brand and setting our custom route
             Car tester = new Car("Fred", Automerken.Ferrari) { route = tour };

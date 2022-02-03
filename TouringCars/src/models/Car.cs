@@ -12,20 +12,15 @@ namespace TouringCars
         private int maxFuel;
         private bool locked;
 
-        public Car(String owner)
+        public Car(String owner, Automerken? brand = null)
         {
             this.owner = owner;
             this.kmDriven = 0;
             this.maxFuel = FixedParams.maxCarFuel;
             this.fuel = FixedParams.startingFuel;
             this.locked = true;
-            this.brand = (Automerken)new Random().Next(0, Enum.GetNames(typeof(Automerken)).Length);
+            this.brand = (Automerken)((brand != null) ? brand : (Automerken)new Random().Next(0, Enum.GetNames(typeof(Automerken)).Length));
             this.route = new Route();
-        }
-
-        public Car(String owner, Automerken brand) : this(owner)
-        {
-            this.brand = brand;
         }
 
         public int getKMDriven()

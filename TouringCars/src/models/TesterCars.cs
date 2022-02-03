@@ -9,44 +9,15 @@ namespace TouringCars
         private int WaypointsToUse;
         private int carAmount;
 
-        public TesterCars(PointOfInterest[] testPoints, int customWaypoints, int customRouteLength, int customCarAmount)
+        public TesterCars(PointOfInterest[]? testPoints = null, int? carAmount = null, int? waypointsToMake = null, int? waypointsToUse = null)
         {
-            this.carAmount = customCarAmount;
-            this.WaypointsToUse = customRouteLength;
-            this.waypointsToMake = customWaypoints;
-            this.testPoints = testPoints;
+            this.carAmount = (carAmount != null) ? (int)carAmount : WorkingParams.testCars;
+            this.waypointsToMake = (waypointsToMake != null) ? (int)waypointsToMake : WorkingParams.wayPoints;
+            this.WaypointsToUse = (waypointsToUse != null) ? (int)WaypointsToUse : WorkingParams.routePoints;
+            this.testPoints = (testPoints != null) ? testPoints : createTestPoints();
             this.cars = createTestCars();
             this.output = "";
         }
-        public TesterCars(int customWaypoints, int customRouteLength, int customCarAmount)
-        {
-            this.carAmount = customCarAmount;
-            this.WaypointsToUse = customRouteLength;
-            this.waypointsToMake = customWaypoints;
-            this.testPoints = createTestPoints();
-            this.cars = createTestCars();
-            this.output = "";
-        }
-        public TesterCars(PointOfInterest[] testPoints)
-        {
-            this.carAmount = WorkingParams.testCars;
-            this.waypointsToMake = WorkingParams.wayPoints;
-            this.WaypointsToUse = WorkingParams.routePoints;
-            this.testPoints = testPoints;
-            this.cars = createTestCars();
-            this.output = "";
-        }
-        public TesterCars()
-        {
-            this.carAmount = WorkingParams.testCars;
-            this.waypointsToMake = WorkingParams.wayPoints;
-            this.WaypointsToUse = WorkingParams.routePoints;
-            this.testPoints = createTestPoints();
-            this.cars = createTestCars();
-            this.output = "";
-        }
-
-
 
         private PointOfInterest[] createTestPoints()
         {
@@ -55,7 +26,7 @@ namespace TouringCars
             PointOfInterest[] points = new PointOfInterest[n];
             for (int j = 0; j < n; j++)
             {
-                points[j] = new PointOfInterest("Testpunt " + j, value: 15, cost: 10);
+                points[j] = new PointOfInterest(name: "Testpunt " + j, value: 15, cost: 10);
             }
             return points;
         }
