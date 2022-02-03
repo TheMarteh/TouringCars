@@ -3,12 +3,14 @@ namespace TouringCars
     public class RoutePoint
     {
         public PointOfInterest poi;
+        public int id;
         public int distanceToNextPoint;
         public Boolean hasReached;
         public int fuelUsedSoFar;
 
-        public RoutePoint(PointOfInterest poi, int distanceToNextPoint, Boolean hasReached, int fuelUsedSoFar)
+        public RoutePoint(int id, PointOfInterest poi, int distanceToNextPoint, Boolean hasReached, int fuelUsedSoFar)
         {
+            this.id = id;
             this.poi = poi;
             this.distanceToNextPoint = distanceToNextPoint;
             this.hasReached = hasReached;
@@ -68,7 +70,7 @@ namespace TouringCars
             PointOfInterest p1 = new PointOfInterest("No route added", new int[] { 0, 0 }, POIType.start);
             PointOfInterest p2 = new PointOfInterest("No route added", new int[] { int.MaxValue, int.MaxValue }, POIType.terminator);
 
-            this.waypoints = new RoutePoint[] { new RoutePoint(p1, 0, false, 0), new RoutePoint(p2, int.MaxValue, false, 0) };
+            this.waypoints = new RoutePoint[] { new RoutePoint(0, p1, 0, false, 0), new RoutePoint(1, p2, int.MaxValue, false, 0) };
             this.hasFinished = false;
             this.atWaypointNumber = 0;
         }
@@ -109,19 +111,18 @@ namespace TouringCars
         public RoutePoint getNextPoint()
         {
             // if there are any more waypoints left in the route, return the next waypoint. else, return a terminator waypoint
-            if (this.atWaypointNumber < this.waypoints.Count())
-            {
-                return this.waypoints[atWaypointNumber];
-            }
-            // only happens when there was no finish and the route has run out.
-            this.atWaypointNumber--;
-            return new RoutePoint(new PointOfInterest("Route has finished", new int[] { this.waypoints[atWaypointNumber].poi.locationX, this.waypoints[atWaypointNumber].poi.locationY }, POIType.terminator), 0, false, 0);
+
+            // if (this.atWaypointNumber < this.waypoints.Count())
+            // {
+            return this.waypoints[atWaypointNumber];
+            // }
+
         }
 
         private RoutePoint[] planRoute(PointOfInterest[] points)
         {
             // initializing the final list as a Tuple<PointOfInterest, bool> array
-            RoutePoint[] sortedPoints = new RoutePoint[points.Length];
+            RoutePoint[] sortedPoints = new RoutePoint[points.Length + 1];
 
             // sorting the points based on distance to 0 ascending 
             // bubble sort
@@ -143,13 +144,12 @@ namespace TouringCars
                 }
             }
 
-            // converting PointOfInterest[] to Tuple<PointOfInterest, int>[]
-            sortedPoints[0] = new RoutePoint(points[0], getDistanceBetweenPoints(new PointOfInterest("Start", new int[] { 0, 0 }, POIType.start), points[0]), false, 0);
-            for (int i = 1; i < points.Length; i++)
+            sortedPoints[0] = new RoutePoint(0, new PointOfInterest("Start", new int[] { 0, 0 }, POIType.start), 0, false, 0);
+            for (int i = 1; i < sortedPoints.Length; i++)
             {
-                sortedPoints[i] = new RoutePoint(points[i], getDistanceBetweenPoints(points[i - 1], points[i]), false, 0);
+                sortedPoints[i] = new RoutePoint(i, points[i - 1], getDistanceBetweenPoints(sortedPoints[i - 1].poi, points[i - 1]), false, 0);
             }
-            sortedPoints[points.Length - 1].setTerminator();
+            sortedPoints.Last().setTerminator();
             return sortedPoints;
         }
         public String getStranded()

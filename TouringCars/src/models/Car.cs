@@ -66,22 +66,22 @@ namespace TouringCars
                 while (!route.hasFinished)
                 {
                     var next = route.getNextPoint();
-                    int distanceToNext = next.distanceToNextPoint;
-                    while (distanceToNext > 0 && !this.route.hasFinished && fuel > 0)
+                    int distanceToPoint = next.distanceToNextPoint;
+                    while (distanceToPoint > 0 && !this.route.hasFinished && fuel > 0)
                     {
                         var res = this.drive();
-                        distanceToNext -= res.Item2;
+                        distanceToPoint -= res.Item2;
                         result += res.Item1;
                     }
-                    if (this.fuel <= 0 && distanceToNext > 0)
+                    if (this.fuel <= 0 && distanceToPoint > 0)
                     {
                         result += this.route.getStranded();
                         // break;
                     }
-                    else if (!route.hasFinished && distanceToNext <= 0)
+                    else if (!route.hasFinished && distanceToPoint <= 0)
                     {
                         // offset the overshoot
-                        this.kmDriven += distanceToNext;
+                        this.kmDriven += distanceToPoint;
 
                         var callback = this.route.arriveAtPoint(this.fuelUsed, this.fuel);
                         result += callback.Item1;

@@ -18,17 +18,19 @@ namespace TouringCars
             String result = "      ##$$%%//   Route Plotter v0.1   \\\\%%$$##\n\n";
             foreach (Car car in carsToUse)
             {
-                result += $"Route van {car.owner}:\n";
+                RoutePoint[] drivenRoute = car.route.getDrivenRoute();
+                result += $"Route van {car.owner}";
+                result += !drivenRoute.Last().hasReached ? " ( not " : " ( ";
+                result += "finished. )\n";
                 // var coords = car.route.getWaypointCoordinates();
-                var drivenRoute = car.route.getDrivenRoute();
 
-                int i = 1;
+                int i = 0;
                 foreach (var point in drivenRoute)
                 {
                     if (point.hasReached)
                     {
-                        String p1 = $"waypoint {i}: [{point.poi.locationX}, {point.poi.locationY}].";
-                        String p2 = $"Distance to get here: {point.distanceToNextPoint} km, Fuel used so far: {point.fuelUsedSoFar}\n";
+                        String p1 = $"waypoint {i}: [{point.poi.locationX}, {point.poi.locationY}]";
+                        String p2 = $"Distance and fuel to get here: {point.distanceToNextPoint} km, {point.fuelUsedSoFar} L\n";
                         String devider = "";
                         while (p1.Length + p2.Length + devider.Length < FixedParams.maxScreenWidth)
                         {

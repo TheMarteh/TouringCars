@@ -22,11 +22,11 @@ namespace TouringCars
 
             // example 
             // manually entered waypoints with specified type and location
-            PointOfInterest p1 = new PointOfInterest("Benzinepomp", new int[] { 46, 23 }, POIType.gas_station);
-            PointOfInterest p2 = new PointOfInterest("McDonalds", new int[] { 88, 55 }, POIType.food);
-            PointOfInterest p3 = new PointOfInterest("Coolblue", new int[] { 69, 71 }, POIType.work);
-            PointOfInterest p4 = new PointOfInterest("Passing Shot", new int[] { 48, 12 }, POIType.hangout);
-            PointOfInterest p5 = new PointOfInterest("Vrienden Live", new int[] { 10, 46 }, POIType.hangout);
+            PointOfInterest p1 = new PointOfInterest("Benzinepomp", new int[] { 1, 3 }, POIType.gas_station);
+            PointOfInterest p2 = new PointOfInterest("McDonalds", new int[] { 6, 1 }, POIType.food);
+            PointOfInterest p3 = new PointOfInterest("Coolblue", new int[] { 5, 8 }, POIType.work);
+            PointOfInterest p4 = new PointOfInterest("Passing Shot", new int[] { 2, 7 }, POIType.hangout);
+            PointOfInterest p5 = new PointOfInterest("Vrienden Live", new int[] { 3, 5 }, POIType.hangout);
             PointOfInterest[] points = new PointOfInterest[] { p1, p2, p3, p4, p5 };
 
             // instantiating the route
@@ -81,6 +81,10 @@ namespace TouringCars
 
                 // Static Analyzer use
                 outputLog += a.plotRoute(logCars);
+                foreach (var car in logCars)
+                {
+                    outputLog += Plotter.plotPoints(car.route.getDrivenRoute());
+                }
             }
 
             Console.Write(outputLog);

@@ -25,6 +25,8 @@ namespace TouringCars
         public static bool createLogFile = true;
         // Maximum screen width to occupy
         public static int maxScreenWidth = 80;
+        //
+        public static int outputLogCelwidth = 3;
     }
 
 }
