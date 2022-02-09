@@ -72,7 +72,7 @@ namespace TouringCars
         {
             return this.cars;
         }
-        public String getOutput()
+        public String printSummary()
         {
             foreach (Car car in cars)
             {

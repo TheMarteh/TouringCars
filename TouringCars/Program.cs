@@ -9,8 +9,8 @@ namespace TouringCars
         public static void Main()
         {
             // initializing variables
+            Analyzer a = new Analyzer();
             String outputLog = "";
-            Car[] logCars;
             PointOfInterest[] points = WorkingParams.points;
 
             // Start typing your code here //
@@ -40,19 +40,19 @@ namespace TouringCars
             // a car can also drive without a route:
             Car driveTillTheSun = new Car(owner: "Pietje");
             outputLog += driveTillTheSun.getIn("Pietje");
-            outputLog += driveTillTheSun.go(showOverride: false);
+            outputLog += driveTillTheSun.go(showOverride: true);
 
             // printing output
-            Analyzer a = new Analyzer();
             a.addCars(testcars.getCars());
             // a.addCars(tester);
 
+            outputLog += "--------------- Log File ----------------\n";
 
             // creating logs
             if (FixedParams.createLogFile)
             {
                 // testcar output
-                outputLog += testcars.getOutput();
+                outputLog += testcars.printSummary();
 
                 // route summaries
                 outputLog += tester.printSummary();
@@ -60,7 +60,7 @@ namespace TouringCars
                 outputLog += "\n";
 
                 // Analyzer results
-                outputLog += a.avgSpeedResults();
+                outputLog += a.avgDistanceResults();
                 outputLog += a.avgRouteLength();
 
                 // Static Analyzer use

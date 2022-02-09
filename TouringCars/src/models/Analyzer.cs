@@ -79,7 +79,7 @@ namespace TouringCars
             this.cars = newCarSet;
             this.n = this.cars.Length;
         }
-        public Tuple<Automerken, int, int, int>[] AvgSpeedPerBrand()
+        public Tuple<Automerken, int, int, int>[] AvgDistancePerBrand()
         {
             int brandsTotal = Enum.GetNames(typeof(Automerken)).Length;
 
@@ -114,10 +114,10 @@ namespace TouringCars
             return result;
         }
 
-        public String avgSpeedResults()
+        public String avgDistanceResults()
         {
             String result = "";
-            var _avgspeedresults = AvgSpeedPerBrand();
+            var _avgspeedresults = AvgDistancePerBrand();
             foreach (var item in _avgspeedresults)
             {
                 result += $"{item.Item1}: {item.Item2} cars. They drove a combined {item.Item3} kilometers, averaging {item.Item4} km per car\n";
