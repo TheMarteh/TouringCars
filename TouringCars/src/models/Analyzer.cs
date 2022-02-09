@@ -8,7 +8,7 @@ namespace TouringCars
         {
             if (carsToAnalyze != null)
             {
-                this.setCars(carsToAnalyze);
+                this.addCars(carsToAnalyze);
             }
         }
 
@@ -55,10 +55,19 @@ namespace TouringCars
             return result;
         }
 
-        public void setCars(Car[] cars)
+        public void addCars(Car[] cars)
         {
-            this.cars = cars;
-            this.n = cars.Length;
+            int allCarsCount = cars.Length;
+            int startIndex = this.cars.Length;
+            Car[] newCarSet = new Car[allCarsCount + startIndex];
+            this.cars.CopyTo(newCarSet, 0);
+            foreach (Car car in cars)
+            {
+                newCarSet[startIndex] = car;
+                startIndex += 1;
+            }
+            this.cars = newCarSet;
+            this.n = this.cars.Length;
         }
         public Tuple<Automerken, int, int, int>[] AvgSpeedPerBrand()
         {

@@ -44,7 +44,7 @@ namespace TouringCars
 
             // printing output
             Analyzer a = new Analyzer();
-            a.setCars(testcars.getCars());
+            a.addCars(testcars.getCars());
 
 
 
