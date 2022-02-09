@@ -4,7 +4,7 @@ namespace TouringCars
     {
         // determines whether to add the testercar outputs to the outputlog
         public static bool showOutput = false;
-        public static bool showLocationCallbackDetails = false;
+        public static bool showLocationCallbackDetails = true;
         public static bool useCustomRoute = true;
         // determines the amount of cars should run in the simulation
         public static int testCars = 100;

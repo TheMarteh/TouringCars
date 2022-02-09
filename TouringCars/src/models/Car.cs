@@ -2,9 +2,9 @@ namespace TouringCars
 {
     public class Car
     {
-        public String owner;
-        public Automerken brand;
-        public Route route;
+        public String owner { get; }
+        public Automerken brand { get; }
+        public Route route { get; }
 
         private int kmDriven;
         private int fuel;

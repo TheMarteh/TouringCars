@@ -3,12 +3,12 @@ namespace TouringCars
     public class ValueChanger
     {
         // helper class to make a callback to the car.
-        public int fuelToChange;
-        public int costToChange;
-        public int famineToChange;
-        public int sleepToChange;
-        public bool isFinished;
-        public bool isStarting;
+        public int fuelToChange { get; }
+        public int costToChange { get; }
+        public int famineToChange { get; }
+        public int sleepToChange { get; }
+        public bool isFinished { get; }
+        public bool isStarting { get; }
 
         public ValueChanger(int fuelToChange = 0, int costToChange = 0, int famineToChange = 0, int sleepToChange = 0, bool isFinished = false, bool isStarting = false)
         {
