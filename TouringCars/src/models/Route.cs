@@ -117,7 +117,7 @@ namespace TouringCars
             }
             PointOfInterest finish = new PointOfInterest(sortedPoints.Last().name, new int[] { sortedPoints.Last().locationX, sortedPoints.Last().locationY }, POIType.terminator, 0, 0);
 
-            RoutePoint final = new RoutePoint(id: plannedPoints[plannedPointsSize - 1].id, poi: finish, distanceToNextPoint: plannedPoints.Last().distanceToNextPoint, false, 0);
+            RoutePoint final = new RoutePoint(id: plannedPoints[plannedPointsSize].id, poi: finish, distanceToNextPoint: plannedPoints.Last().distanceToNextPoint, false, 0);
             plannedPoints[plannedPointsSize] = final;
 
             // debug
