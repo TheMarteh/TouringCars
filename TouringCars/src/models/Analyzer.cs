@@ -36,7 +36,7 @@ namespace TouringCars
                         else
                         {
                             String p1 = $"waypoint {i}: [{point.poi.locationX}, {point.poi.locationY}]";
-                            String p2 = $"Distance and fuel to get here: {point.distanceToNextPoint} km, {point.fuelUsedSoFar} L\n";
+                            String p2 = $"Distance, fuel to get here: {point.distanceToNextPoint} km, {point.fuelUsedSinceLast} L. Total fuel used: {point.fuelUsedSoFar} L\n";
                             String devider = "";
                             while (p1.Length + p2.Length + devider.Length < FixedParams.maxScreenWidth)
                             {

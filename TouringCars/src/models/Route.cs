@@ -210,10 +210,10 @@ namespace TouringCars
             return "Finished route, well done!\n";
         }
 
-        public Tuple<String, ValueChanger> arriveAtPoint(int usedFuel, int fuelLeft, int kmDriven)
+        public Tuple<String, ValueChanger> arriveAtPoint(int usedFuelSoFar, int carFuelLeft, int kmDriven, int fuelUsedToGetToPoint)
         {
             RoutePoint p = this.waypoints[atWaypointNumber];
-            var callback = p.arriveAtPoint(atWaypointNumber, usedFuel, fuelLeft, kmDriven);
+            var callback = p.arriveAtPoint(atWaypointNumber, usedFuelSoFar, carFuelLeft, kmDriven, fuelUsedToGetToPoint);
             this.atWaypointNumber++;
             return callback;
         }

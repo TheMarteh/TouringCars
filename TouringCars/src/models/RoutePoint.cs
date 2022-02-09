@@ -7,6 +7,8 @@ namespace TouringCars
         public int distanceToNextPoint;
         public Boolean hasReached;
         public int fuelUsedSoFar;
+        public int fuelUsedSinceLast = 0;
+        public int distanceSoFar = 0;
 
         public RoutePoint(int id, PointOfInterest poi, int distanceToNextPoint, Boolean hasReached, int fuelUsedSoFar)
         {
@@ -17,13 +19,14 @@ namespace TouringCars
             this.fuelUsedSoFar = fuelUsedSoFar;
         }
 
-        public Tuple<String, ValueChanger> arriveAtPoint(int waypointNumber, int usedFuel, int fuelLeft, int drivenSoFar)
+        public Tuple<String, ValueChanger> arriveAtPoint(int waypointNumber, int carTotalUsedFuel, int fuelLeft, int drivenSoFar, int fuelUsedToGetHere)
         {
             this.hasReached = true;
-            this.fuelUsedSoFar = usedFuel;
+            this.fuelUsedSoFar = carTotalUsedFuel;
+            this.fuelUsedSinceLast = fuelUsedToGetHere;
 
             String result = "";
-            result += $"Arrived at {waypointNumber}) ({this.poi.type}) {this.poi.name}, Fuel left: {fuelLeft}, Travelled since previous: {this.distanceToNextPoint} Total: {drivenSoFar}\n";
+            result += $"Arrived at {waypointNumber}) ({this.poi.type}) {this.poi.name}. Fuel left: {fuelLeft}, Travelled since previous: {this.distanceToNextPoint} Total: {drivenSoFar}\n";
             ValueChanger valueChanger;
 
             switch (this.poi.type)
