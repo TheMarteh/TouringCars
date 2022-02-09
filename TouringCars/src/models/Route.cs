@@ -12,6 +12,13 @@ namespace TouringCars
 
         public Route(PointOfInterest[]? points = null, Sorter? sorter = null, bool? useZeroPointAsStart = null, int? seed = null)
         {
+
+            this.sorter = (Sorter)((sorter != null) ? sorter : (Sorter)Sorter.randomSort);
+            this.rng = (seed != null) ? new Random((int)seed) : new Random(Guid.NewGuid().GetHashCode());
+            this.useZeroPointAsStart = (useZeroPointAsStart == null) ? false : (Boolean)useZeroPointAsStart;
+
+            this.hasFinished = false;
+            this.atWaypointNumber = 0;
             if (points != null)
             {
                 this.waypoints = this.planRoute(points);
@@ -22,12 +29,6 @@ namespace TouringCars
                 PointOfInterest p2 = new PointOfInterest("No route added", new int[] { int.MaxValue, int.MaxValue }, POIType.terminator);
                 this.waypoints = new RoutePoint[] { new RoutePoint(0, p1, 0, false, 0), new RoutePoint(1, p2, int.MaxValue, false, 0) };
             }
-            this.sorter = (Sorter)((sorter != null) ? sorter : (Sorter)Sorter.randomSort);
-            this.rng = (seed != null) ? new Random((int)seed) : new Random(Guid.NewGuid().GetHashCode());
-            this.useZeroPointAsStart = (useZeroPointAsStart != null) ? false : true;
-
-            this.hasFinished = false;
-            this.atWaypointNumber = 0;
         }
 
         public Tuple<int, int> getLength()
@@ -38,7 +39,7 @@ namespace TouringCars
             {
                 total += waypoints[i].distanceToNextPoint < int.MaxValue ? waypoints[i].distanceToNextPoint : 0;
             }
-            return new Tuple<int, int>(waypoints.Count(), total);
+            return new Tuple<int, int>(waypoints.Count() - 1, total);
         }
 
         public RoutePoint[] getDrivenRoute()
@@ -79,15 +80,28 @@ namespace TouringCars
             // initializing the final list as a Tuple<PointOfInterest, bool> array
 
             // sorting the points based on distance to 0 ascending 
-            // bubble sort
-            // TODO: Build navigator.
-            // Sorting breaks with locationX and locationY. For now just sorting by locationX
+            PointOfInterest[] sortedPoints = new PointOfInterest[points.Length];
+            points.CopyTo(sortedPoints, 0);
+            sortedPoints = sortPoints(sortedPoints);
 
-            PointOfInterest[] sortedPoints = sortPoints(points);
+            // debug
+
+            // System.Console.WriteLine("Original list");
+            // foreach (PointOfInterest point in points)
+            // {
+            //     System.Console.WriteLine(point.name + " " + point.type);
+            // }
+            // System.Console.WriteLine();
+            // System.Console.WriteLine("After Sorting");
+            // foreach (PointOfInterest point in sortedPoints)
+            // {
+            //     System.Console.WriteLine(point.name + " " + point.type);
+            // }
+            // System.Console.WriteLine();
+
             RoutePoint[] plannedPoints;
-
             int plannedPointsSize = useZeroPointAsStart ? sortedPoints.Length : sortedPoints.Length;
-            plannedPoints = new RoutePoint[plannedPointsSize];
+            plannedPoints = new RoutePoint[plannedPointsSize + 1];
 
             if (useZeroPointAsStart)
             {
@@ -95,14 +109,32 @@ namespace TouringCars
             }
             else
             {
-                plannedPoints = new RoutePoint[sortedPoints.Length];
                 plannedPoints[0] = new RoutePoint(0, new PointOfInterest(sortedPoints[0].name, new int[] { sortedPoints[0].locationX, sortedPoints[0].locationY }, POIType.start), 0, false, 0);
             }
-            for (int i = 1; i < sortedPoints.Length; i++)
+            for (int i = 1; i <= plannedPointsSize; i++)
             {
                 plannedPoints[i] = new RoutePoint(i, sortedPoints[i - 1], getDistanceBetweenPoints(plannedPoints[i - 1].poi, sortedPoints[i - 1]), false, 0);
             }
-            plannedPoints.Last().setTerminator();
+            PointOfInterest finish = new PointOfInterest(sortedPoints.Last().name, new int[] { sortedPoints.Last().locationX, sortedPoints.Last().locationY }, POIType.terminator, 0, 0);
+
+            RoutePoint final = new RoutePoint(id: plannedPoints[plannedPointsSize - 1].id, poi: finish, distanceToNextPoint: plannedPoints.Last().distanceToNextPoint, false, 0);
+            plannedPoints[plannedPointsSize] = final;
+
+            // debug
+            // System.Console.WriteLine("After planning: ");
+            // foreach (RoutePoint point in plannedPoints)
+            // {
+            //     System.Console.WriteLine(point.id + " " + point.poi.name + " " + point.poi.type);
+            // }
+            // System.Console.WriteLine();
+
+            // System.Console.WriteLine("Original list after Sorting and planning");
+            // foreach (PointOfInterest point in points)
+            // {
+            //     System.Console.WriteLine(point.name + " " + point.type);
+            // }
+            // System.Console.WriteLine();
+
             return plannedPoints;
         }
 
@@ -130,20 +162,20 @@ namespace TouringCars
         {
             Random rng = this.rng;
             PointOfInterest[] randompoints = new PointOfInterest[points.Length];
+            points.CopyTo(randompoints, 0);
             int n = points.Length;
             while (n > 1)
             {
                 int k = rng.Next(n--);
-                PointOfInterest temp = points[n];
-                points[n] = points[k];
-                points[k] = temp;
+                PointOfInterest temp = randompoints[n];
+                randompoints[n] = randompoints[k];
+                randompoints[k] = temp;
             }
-            randompoints = points;
             // debug
-            if (points.Last().locationX == 11)
-            {
-                System.Console.WriteLine("Sorting made last element the same as previous last!");
-            }
+            // if (randompoints.Last().locationX == 11)
+            // {
+            //     System.Console.WriteLine("Sorting made last element the same as previous last!");
+            // }
             return randompoints;
         }
 
@@ -151,19 +183,21 @@ namespace TouringCars
         private PointOfInterest[] bubbleSort(PointOfInterest[] points)
         {
             PointOfInterest temp;
-            for (int j = 0; j <= points.Length - 2; j++)
+            PointOfInterest[] sortedPoints = new PointOfInterest[points.Length];
+            Array.Copy(points, sortedPoints, points.Length);
+            for (int j = 0; j <= sortedPoints.Length - 2; j++)
             {
-                for (int i = 0; i <= points.Length - 2; i++)
+                for (int i = 0; i <= sortedPoints.Length - 2; i++)
                 {
-                    if (points[i].locationX > points[i + 1].locationX)
+                    if (sortedPoints[i].locationX > sortedPoints[i + 1].locationX)
                     {
-                        temp = points[i + 1];
-                        points[i + 1] = points[i];
-                        points[i] = temp;
+                        temp = sortedPoints[i + 1];
+                        sortedPoints[i + 1] = sortedPoints[i];
+                        sortedPoints[i] = temp;
                     }
                 }
             }
-            return points;
+            return sortedPoints;
         }
         public String getStranded()
         {
@@ -176,13 +210,11 @@ namespace TouringCars
             return "Finished route, well done!\n";
         }
 
-        public Tuple<String, ValueChanger> arriveAtPoint(int usedFuel, int fuelLeft)
+        public Tuple<String, ValueChanger> arriveAtPoint(int usedFuel, int fuelLeft, int kmDriven)
         {
             RoutePoint p = this.waypoints[atWaypointNumber];
-
+            var callback = p.arriveAtPoint(atWaypointNumber, usedFuel, fuelLeft, kmDriven);
             this.atWaypointNumber++;
-            var callback = p.arriveAtPoint(usedFuel, fuelLeft);
-
             return callback;
         }
     }

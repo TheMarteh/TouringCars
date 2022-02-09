@@ -29,15 +29,23 @@ namespace TouringCars
                 {
                     if (point.hasReached)
                     {
-                        String p1 = $"waypoint {i}: [{point.poi.locationX}, {point.poi.locationY}]";
-                        String p2 = $"Distance and fuel to get here: {point.distanceToNextPoint} km, {point.fuelUsedSoFar} L\n";
-                        String devider = "";
-                        while (p1.Length + p2.Length + devider.Length < FixedParams.maxScreenWidth)
+                        if ((!WorkingParams.useZeroPointAsStart && point.id == 0))
                         {
-                            devider += " ";
+                            i++;
                         }
-                        result += p1 + devider + p2;
-                        i++;
+                        else
+                        {
+                            String p1 = $"waypoint {i}: [{point.poi.locationX}, {point.poi.locationY}]";
+                            String p2 = $"Distance and fuel to get here: {point.distanceToNextPoint} km, {point.fuelUsedSoFar} L\n";
+                            String devider = "";
+                            while (p1.Length + p2.Length + devider.Length < FixedParams.maxScreenWidth)
+                            {
+                                devider += " ";
+                            }
+                            result += p1 + devider + p2;
+                            i++;
+                        }
+
                     }
                 }
                 result += $"Driven in this route: {car.getKMDriven()} km\n";

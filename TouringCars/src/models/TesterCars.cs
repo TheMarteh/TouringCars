@@ -8,13 +8,15 @@ namespace TouringCars
         private int waypointsToMake;
         private int WaypointsToUse;
         private int carAmount;
+        private bool customPoints;
 
         public TesterCars(PointOfInterest[]? testPoints = null, int? carAmount = null, int? waypointsToMake = null, int? waypointsToUse = null)
         {
             this.carAmount = (carAmount != null) ? (int)carAmount : WorkingParams.testCars;
             this.waypointsToMake = (waypointsToMake != null) ? (int)waypointsToMake : WorkingParams.wayPoints;
             this.WaypointsToUse = (waypointsToUse != null) ? (int)WaypointsToUse : WorkingParams.routePoints;
-            this.testPoints = (testPoints != null) ? testPoints : createTestPoints();
+            this.testPoints = (testPoints == null) ? createTestPoints() : testPoints;
+            this.customPoints = (testPoints == null) ? false : true;
             this.cars = createTestCars();
             this.output = "";
         }
@@ -43,22 +45,22 @@ namespace TouringCars
                 }
 
                 // setting up route and creating the car instance
-                Route testTour = new Route();
-                if (testPoints.Length > 0) { testTour = new Route(carPoints); }
-                testerCars[i] = new Car($"Testauto #{i}") { route = testTour };
+                Route testTour = (customPoints) ? new Route(points: testPoints, useZeroPointAsStart: WorkingParams.useZeroPointAsStart) : new Route(points: carPoints, useZeroPointAsStart: WorkingParams.useZeroPointAsStart);
+                testerCars[i] = new Car(owner: $"Testauto #{i}", route: testTour);
 
             }
             return testerCars;
         }
 
-        public void go(Boolean showOutput)
+        public void go(Boolean? showOutput = null)
         {
+            showOutput = (showOutput == null) ? WorkingParams.showOutput : showOutput;
             // looping over all cars in the system
             foreach (Car car in cars)
             {
                 // starting the drive
-                this.output += car.getIn(car.owner, showOutput);
-                this.output += car.go(showOutput);
+                this.output += car.getIn(car.owner, (Boolean)showOutput);
+                this.output += car.go((Boolean)showOutput);
 
                 // change addToLog to true to print the summary after an individual testcar has driven. Defaults to false
                 // because we will print out all the summaries at once in the output log creation stage. 

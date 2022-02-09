@@ -12,7 +12,7 @@ namespace TouringCars
         private int maxFuel;
         private bool locked;
 
-        public Car(String owner, Automerken? brand = null)
+        public Car(String owner, Automerken? brand = null, Route? route = null)
         {
             this.owner = owner;
             this.kmDriven = 0;
@@ -20,7 +20,7 @@ namespace TouringCars
             this.fuel = FixedParams.startingFuel;
             this.locked = true;
             this.brand = (Automerken)((brand != null) ? brand : (Automerken)new Random().Next(0, Enum.GetNames(typeof(Automerken)).Length));
-            this.route = new Route();
+            this.route = (Route)(route != null ? route : new Route());
         }
 
         public int getKMDriven()
@@ -41,13 +41,20 @@ namespace TouringCars
         public String handlePointCallback(ValueChanger v)
         {
             String result = "";
-            result += v.fuelToChange != 0 ? this.addFuel(v.fuelToChange).Item1 : "";
-
+            result += v.isStarting ? "  Start: Let\'s go!\n" : "";
+            result += v.fuelToChange > 0 ? this.addFuel(v.fuelToChange).Item1 : "";
+            result += v.famineToChange > 0 ? "  Getting hungry..\n" : "";
+            result += v.famineToChange < 0 ? "  Food has been eaten.\n" : "";
+            result += v.sleepToChange > 0 ? "  Getting sleepy..\n" : "";
+            result += v.sleepToChange < 0 ? "  Got some nice rest\n" : "";
+            result += v.isFinished ? "  Looks like we\'ve reached the end.\n" : "";
+            result += v.costToChange > 0 ? "  This has cost some money\n" : "";
+            result += v.costToChange < 0 ? "  This has made you some money\n" : "";
             if (v.isFinished)
             {
                 result += this.route.finish();
             }
-            return result;
+            return WorkingParams.showLocationCallbackDetails ? result : "";
         }
 
         public String go(Boolean showOverride = false)
@@ -78,7 +85,7 @@ namespace TouringCars
                         // offset the overshoot
                         this.kmDriven += distanceToPoint;
 
-                        var callback = this.route.arriveAtPoint(this.fuelUsed, this.fuel);
+                        var callback = this.route.arriveAtPoint(this.fuelUsed, this.fuel, this.getKMDriven());
                         result += callback.Item1;
                         result += this.handlePointCallback(callback.Item2);
 
@@ -86,26 +93,27 @@ namespace TouringCars
                         // Thread.Sleep(1000);
                     }
                 }
-                result += "We\'re done, getting out of the car..\n\n";
+                result += "  We\'re done, getting out and locking the car..\n\n";
                 this.locked = true;
             }
             return showOverride || WorkingParams.showOutput ? result : "";
         }
 
-        public String getIn(String name, Boolean showOverride = false)
+        public String getIn(String name, Boolean? showOverride = null)
         {
+            showOverride = (showOverride == null) ? WorkingParams.showOutput : showOverride;
             String result = "";
             result += $"Person {name} is trying to get into the car of {this.owner}\n";
             if (name == this.owner)
             {
                 this.locked = false;
-                result += "    The car is now unlocked!\n";
+                result += "  The car is now unlocked!\n";
             }
             else
             {
-                result += "    The car doesn't open..\n";
+                result += "  The car doesn't open..\n";
             }
-            if (WorkingParams.showOutput || showOverride)
+            if ((Boolean)showOverride)
             {
                 return result;
             }
@@ -183,11 +191,11 @@ namespace TouringCars
                     {
                         this.fuel += amount;
                     }
-                    result += "Done, you can now drive some more! " + fuel + " liters left\n";
+                    result += $"  Added {amount} liters of fuel\n";
                 }
                 else
                 {
-                    result += $"You\'re still good!\nOff you go, with {fuel} liters left!\n";
+                    result += $"  You\'re still good!\nOff you go, with {fuel} liters left!\n";
                 }
             }
             // return the fuel amount
@@ -201,7 +209,7 @@ namespace TouringCars
                 // returns basic car information and a summary of the trip (so far)
                 // Testauto #8's auto (Audi):          6 van de 20 (60 / 225 km)
                 String carSummary = $"{this.owner}'s auto ({this.brand}):";
-                String routeSummary = $"{this.route.atWaypointNumber} van de {this.route.getLength().Item1} ({this.kmDriven} / {this.route.getLength().Item2} km)";
+                String routeSummary = $"{this.route.atWaypointNumber - 1} van de {this.route.getLength().Item1} ({this.kmDriven} / {this.route.getLength().Item2} km)";
                 while (carSummary.Length < 35)
                 {
                     carSummary += " ";

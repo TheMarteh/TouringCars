@@ -3,13 +3,13 @@ namespace TouringCars
     public class PointOfInterest
     {
         public String name { get; set; }
-        public int locationX { get; set; }
-        public int locationY { get; set; }
-        public POIType type;
-        public int value;
-        public int cost;
+        public int locationX { get; }
+        public int locationY { get; }
+        public POIType type { get; }
+        public int value { get; }
+        public int cost { get; }
 
-        public PointOfInterest(String name, int[]? location = null, POIType? type = null, int value = 0, int cost = 0)
+        public PointOfInterest(String name, int[]? location = null, POIType? type = null, int value = 10, int cost = 5)
         {
             Random rnd = new Random();
             this.type = (POIType)((type != null) ? type : (POIType)rnd.Next(0, Enum.GetNames(typeof(POIType)).Length - 2));

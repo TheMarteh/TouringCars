@@ -3,15 +3,16 @@ namespace TouringCars
     public class Plotter
     {
         private int width = WorkingParams.maxDistance;
-        public static String plotPoints(RoutePoint[] points)
+        public static String plotPoints(RoutePoint[] points, String name = "")
         {
             int width = WorkingParams.maxDistance;
             int celwidth = FixedParams.outputLogCelwidth;
             char yCharacter = '|';
             char xCharacter = '-';
-
-
+            String xIndent = new String(' ', label(0, ' ').Length);
             String graphResult = "";
+            String graphTitle = $"{xIndent} {name}\n";
+            graphResult += graphTitle;
             String[][] graph = new String[width][];
             for (int y = width - 1; y >= 0; y--)
             {
@@ -45,7 +46,6 @@ namespace TouringCars
                 }
                 graphResult += "\n";
             }
-            String xIndent = new String(' ', label(0, ' ').Length);
             graphResult += xIndent + new String(xCharacter, width * celwidth) + "\n" + xIndent;
             for (int i = 0; i < width; i++)
             {

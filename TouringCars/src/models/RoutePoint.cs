@@ -17,41 +17,44 @@ namespace TouringCars
             this.fuelUsedSoFar = fuelUsedSoFar;
         }
 
-        public Tuple<String, ValueChanger> arriveAtPoint(int usedFuel, int fuelLeft)
+        public Tuple<String, ValueChanger> arriveAtPoint(int waypointNumber, int usedFuel, int fuelLeft, int drivenSoFar)
         {
             this.hasReached = true;
             this.fuelUsedSoFar = usedFuel;
 
             String result = "";
+            result += $"Arrived at {waypointNumber}) ({this.poi.type}) {this.poi.name}, Fuel left: {fuelLeft}, Travelled since previous: {this.distanceToNextPoint} Total: {drivenSoFar}\n";
             ValueChanger valueChanger;
 
             switch (this.poi.type)
             {
                 case POIType.start:
-                    result += "Start: Let\'s go!\n";
-                    valueChanger = new ValueChanger(0, 0, 0, 0, false);
+                    valueChanger = new ValueChanger(isStarting: true);
                     return Tuple.Create(result, valueChanger);
                 case POIType.terminator:
-                    valueChanger = new ValueChanger(0, 0, 0, 0, true);
+                    valueChanger = new ValueChanger(isFinished: true);
                     return Tuple.Create(result, valueChanger);
                 case POIType.gas_station:
-                    valueChanger = new ValueChanger(this.poi.value, this.poi.cost, 0, 0, false);
-                    result += $"Arrived at waypoint {this.poi.name} at {this.distanceToNextPoint}km!\nFuel left: {fuelLeft}\n";
+                    valueChanger = new ValueChanger(fuelToChange: this.poi.value, costToChange: -this.poi.cost);
                     return Tuple.Create(result, valueChanger);
                 case POIType.food:
-                    valueChanger = new ValueChanger(0, this.poi.cost, this.poi.value, 0, false);
-                    result += $"Arrived at waypoint {this.poi.name} at {this.distanceToNextPoint}km!\nFuel left: {fuelLeft}\n";
-                    result += "Nom nom, lekker eten\n";
+                    valueChanger = new ValueChanger(costToChange: -this.poi.cost, famineToChange: -this.poi.value);
+                    return Tuple.Create(result, valueChanger);
+                case POIType.work:
+                    valueChanger = new ValueChanger(costToChange: this.poi.cost);
+                    return Tuple.Create(result, valueChanger);
+                case POIType.hangout:
+                    valueChanger = new ValueChanger(famineToChange: this.poi.value);
                     return Tuple.Create(result, valueChanger);
                 default:
-                    valueChanger = new ValueChanger(0, 0, 0, 0, false);
-                    result += $"Arrived at waypoint {this.poi.name} at {this.distanceToNextPoint}km!\nFuel left: {fuelLeft}\n";
+                    valueChanger = new ValueChanger();
                     return Tuple.Create(result, valueChanger);
             }
         }
-        public void setTerminator()
+        public RoutePoint setTerminator()
         {
-            this.poi.type = POIType.terminator;
+            RoutePoint terminator = new RoutePoint(this.id, new PointOfInterest(this.poi.name, new int[] { this.poi.locationX, this.poi.locationY }, POIType.terminator), this.distanceToNextPoint, false, 0);
+            return terminator;
         }
     }
 }

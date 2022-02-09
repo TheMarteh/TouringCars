@@ -8,40 +8,25 @@ namespace TouringCars
     {
         public static void Main()
         {
-            // initializing outputlog
+            // initializing variables
             String outputLog = "";
             Car[] logCars;
-
-
-
+            PointOfInterest[] points = WorkingParams.points;
 
             // Start typing your code here //
 
-            // example 
-            // manually entered waypoints with specified type and location
-            PointOfInterest[] points = new PointOfInterest[] {
-                new PointOfInterest("Shell", new int[] { 1, 13 }, POIType.gas_station),
-                new PointOfInterest("McDonalds", new int[] { 9, 12 }, POIType.food),
-                new PointOfInterest("Albert Heijn", new int[] { 10, 2 }, POIType.food),
-                new PointOfInterest("Google HQ", new int[] { 18, 5 }, POIType.work),
-                new PointOfInterest("Coolblue", new int[] { 4, 8 }, POIType.work),
-                new PointOfInterest("Passing Shot", new int[] { 12, 17 }, POIType.hangout),
-                new PointOfInterest("Vrienden Live", new int[] { 6, 3 }, POIType.hangout),
-                new PointOfInterest("Coolsingel", new int[] { 18, 13 }, POIType.hangout),
-                new PointOfInterest("BP", new int[] { 17, 15 }, POIType.gas_station),
-                new PointOfInterest("Erasmus University", new int[] { 11, 12 }, POIType.hangout),
-             };
-
             // instantiating the route
-            Route tour = new Route(points, useZeroPointAsStart: true, sorter: Sorter.randomSort);
+            Route tour = new Route(points, useZeroPointAsStart: WorkingParams.useZeroPointAsStart, sorter: Sorter.randomSort);
 
             // setting and running the testcars
             // these are the cars that respond to the variables in Config.cs
-            TesterCars testcars = new TesterCars(points);
-            testcars.go(showOutput: true);
+            // uses the default points if WorkingParams.useCustomRoute == false. Otherwise it creates random points
+            // based on the other parameters in WorkingParams.
+            TesterCars testcars = new TesterCars(testPoints: WorkingParams.useCustomRoute ? points : null);
+            testcars.go();
 
             // instantiating a single car object with a brand and setting our custom route
-            Car tester = new Car("Fred", Automerken.Ferrari) { route = tour };
+            Car tester = new Car(owner: "Fred", brand: Automerken.Ferrari, route: tour);
 
             // starting the drive without the owner entering the car will not work.
             tester.go(); // will not work, as the car first needs to be unlocked
@@ -53,9 +38,9 @@ namespace TouringCars
             outputLog += tester.go(showOverride: true);
 
             // a car can also drive without a route:
-            Car driveTillTheSun = new Car("Pietje");
-            outputLog += driveTillTheSun.getIn("Pietje", showOverride: true);
-            outputLog += driveTillTheSun.go(showOverride: true);
+            Car driveTillTheSun = new Car(owner: "Pietje");
+            outputLog += driveTillTheSun.getIn("Pietje");
+            outputLog += driveTillTheSun.go(showOverride: false);
 
             // printing output
             Analyzer a = new Analyzer();
@@ -67,7 +52,7 @@ namespace TouringCars
             logCars = new Car[] {
                 tester,
                 // driveTillTheSun,
-                // testcars.getCars()[0],
+                testcars.getCars()[0],
                 };
 
 
@@ -89,9 +74,10 @@ namespace TouringCars
 
                 // Static Analyzer use
                 outputLog += a.plotRoute(logCars);
+
                 foreach (var car in logCars)
                 {
-                    outputLog += Plotter.plotPoints(car.route.getDrivenRoute());
+                    outputLog += Plotter.plotPoints(points: car.route.getDrivenRoute(), name: car.owner);
                 }
             }
 
