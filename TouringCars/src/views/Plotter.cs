@@ -3,7 +3,7 @@ namespace TouringCars
     public class Plotter
     {
         private int width = WorkingParams.maxDistance;
-        public static String plotPoints(RoutePoint[] points, String name = "")
+        public static String plotPoints(Route route, String name = "")
         {
             int width = WorkingParams.maxDistance;
             int celwidth = FixedParams.outputLogCelwidth;
@@ -23,7 +23,7 @@ namespace TouringCars
                 }
             }
 
-            foreach (var point in points)
+            foreach (var point in route.getDrivenRoute())
             {
                 if (point.hasReached)
                 {

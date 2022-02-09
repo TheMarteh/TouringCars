@@ -12,7 +12,7 @@ namespace TouringCars
             }
         }
 
-        public String plotRoute(Car[]? cars = null)
+        public String plotRoutes(Car[]? cars = null)
         {
             Car[] carsToUse = cars == null ? this.cars : cars;
             String result = "      ##$$%%//   Route Plotter v0.1   \\\\%%$$##\n\n";
@@ -51,6 +51,7 @@ namespace TouringCars
                 result += $"Driven in this route: {car.getKMDriven()} km\n";
                 int conditionalDistance = car.route.getLength().Item2 < int.MaxValue ? car.route.getLength().Item2 : 0;
                 result += $"Total route distance: {conditionalDistance} km\n\n";
+                result += Plotter.plotPoints(car.route, car.owner);
             }
             return result;
         }
@@ -66,6 +67,15 @@ namespace TouringCars
                 newCarSet[startIndex] = car;
                 startIndex += 1;
             }
+            this.cars = newCarSet;
+            this.n = this.cars.Length;
+        }
+        public void addCars(Car car)
+        {
+            int startIndex = this.cars.Length;
+            Car[] newCarSet = new Car[startIndex + 1];
+            this.cars.CopyTo(newCarSet, 0);
+            newCarSet[startIndex] = car;
             this.cars = newCarSet;
             this.n = this.cars.Length;
         }

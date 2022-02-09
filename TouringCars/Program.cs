@@ -45,16 +45,7 @@ namespace TouringCars
             // printing output
             Analyzer a = new Analyzer();
             a.addCars(testcars.getCars());
-
-
-
-            // add your Cars here //
-            logCars = new Car[] {
-                tester,
-                // driveTillTheSun,
-                testcars.getCars()[0],
-                };
-
+            // a.addCars(tester);
 
 
             // creating logs
@@ -73,12 +64,9 @@ namespace TouringCars
                 outputLog += a.avgRouteLength();
 
                 // Static Analyzer use
-                outputLog += a.plotRoute(logCars);
+                outputLog += a.plotRoutes();
 
-                foreach (var car in logCars)
-                {
-                    outputLog += Plotter.plotPoints(points: car.route.getDrivenRoute(), name: car.owner);
-                }
+
             }
 
             Console.Write(outputLog);
