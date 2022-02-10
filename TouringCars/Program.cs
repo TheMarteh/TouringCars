@@ -22,7 +22,7 @@ namespace TouringCars
             // these are the cars that respond to the variables in Config.cs
             // uses the default points if WorkingParams.useCustomRoute == false. Otherwise it creates random points
             // based on the other parameters in WorkingParams.
-            TesterCars testcars = new TesterCars(testPoints: WorkingParams.useCustomRoute ? points : null);
+            TesterCars testcars = new TesterCars(testPoints: WorkingParams.useCustomRoute ? points : null, sorter: Sorter.randomSort);
             testcars.go();
 
             // instantiating a single car object with a brand and setting our custom route
@@ -42,15 +42,20 @@ namespace TouringCars
             outputLog += driveTillTheSun.getIn("Pietje");
             outputLog += driveTillTheSun.go(showOverride: true);
 
-            // printing output
-            a.addCars(testcars.getCars());
-            // a.addCars(tester);
 
-            outputLog += "--------------- Log File ----------------\n";
+
 
             // creating logs
             if (FixedParams.createLogFile)
             {
+                outputLog += "--------------- Log File ----------------\n";
+                // adding cars to analyzer.
+                a.addCars(testcars.getCars());
+                a.addCars(tester);
+
+                // Static Analyzer use
+                outputLog += a.plotRoutes();
+
                 // testcar output
                 outputLog += testcars.printSummary();
 
@@ -62,10 +67,6 @@ namespace TouringCars
                 // Analyzer results
                 outputLog += a.avgDistanceResults();
                 outputLog += a.avgRouteLength();
-
-                // Static Analyzer use
-                outputLog += a.plotRoutes();
-
 
             }
 

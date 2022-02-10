@@ -9,14 +9,16 @@ namespace TouringCars
         private int WaypointsToUse;
         private int carAmount;
         private bool customPoints;
+        private Sorter sorter;
 
-        public TesterCars(PointOfInterest[]? testPoints = null, int? carAmount = null, int? waypointsToMake = null, int? waypointsToUse = null)
+        public TesterCars(PointOfInterest[]? testPoints = null, int? carAmount = null, int? waypointsToMake = null, int? waypointsToUse = null, Sorter sorter = Sorter.no_sorter)
         {
             this.carAmount = (carAmount != null) ? (int)carAmount : WorkingParams.testCars;
             this.waypointsToMake = (waypointsToMake != null) ? (int)waypointsToMake : WorkingParams.wayPoints;
             this.WaypointsToUse = (waypointsToUse != null) ? (int)WaypointsToUse : WorkingParams.routePoints;
             this.testPoints = (testPoints == null) ? createTestPoints() : testPoints;
             this.customPoints = (testPoints == null) ? false : true;
+            this.sorter = sorter;
             this.cars = createTestCars();
             this.output = "";
         }
@@ -35,17 +37,26 @@ namespace TouringCars
         private Car[] createTestCars()
         {
             Car[] testerCars = new Car[carAmount];
+            Route testTour;
             for (int i = 0; i < carAmount; i++)
             {
                 // populating the test route with random points. Each test car gets their own route
-                PointOfInterest[] carPoints = new PointOfInterest[this.WaypointsToUse];
-                for (int j = 0; j < this.WaypointsToUse; j++)
+                if (!customPoints)
                 {
-                    carPoints[j] = this.testPoints[new Random().Next(0, testPoints.Count())];
+                    PointOfInterest[] carPoints = new PointOfInterest[this.WaypointsToUse];
+                    for (int j = 0; j < this.WaypointsToUse; j++)
+                    {
+                        carPoints[j] = this.testPoints[new Random().Next(0, testPoints.Count())];
+                    }
+                    testTour = new Route(points: carPoints, useZeroPointAsStart: WorkingParams.useZeroPointAsStart, sorter: sorter);
+                }
+                else
+                {
+                    testTour = new Route(points: testPoints, useZeroPointAsStart: WorkingParams.useZeroPointAsStart, sorter: sorter);
                 }
 
+
                 // setting up route and creating the car instance
-                Route testTour = (customPoints) ? new Route(points: testPoints, useZeroPointAsStart: WorkingParams.useZeroPointAsStart) : new Route(points: carPoints, useZeroPointAsStart: WorkingParams.useZeroPointAsStart);
                 testerCars[i] = new Car(owner: $"Testauto #{i}", route: testTour);
 
             }
