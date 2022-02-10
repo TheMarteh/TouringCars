@@ -71,13 +71,13 @@ namespace TouringCarsTests
         public void distanceLowerMaxDistance()
         {
             Boolean result = true;
-            TesterCars testcars = new TesterCars(waypointsToMake: 50, waypointsToUse: 10, carAmount: 10);
+            TesterCars testcars = new TesterCars(carAmount: 10, waypointsToMake: 50, waypointsToUse: 10);
             testcars.go(showOutput: false);
             foreach (Car carToTest in testcars.getCars())
             {
                 int routelength = carToTest.route.getLength().Item2;
-                Boolean b1 = (carToTest.route.atWaypointNumber > carToTest.route.countWaypoints() && carToTest.getKMDriven() >= routelength);
-                Boolean b2 = ((carToTest.route.atWaypointNumber <= carToTest.route.countWaypoints() && carToTest.getKMDriven() < routelength) || routelength == 0);
+                Boolean b1 = (carToTest.route.atWaypointNumber >= carToTest.route.countWaypoints() && carToTest.getKMDriven() >= routelength);
+                Boolean b2 = ((carToTest.route.atWaypointNumber < carToTest.route.countWaypoints() && carToTest.getKMDriven() < routelength) || routelength == 0);
                 result = (result && (b1 || b2));
             }
             Assert.IsTrue(result, "Driven a wrong amount!");

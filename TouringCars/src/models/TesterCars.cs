@@ -6,7 +6,7 @@ namespace TouringCars
         private PointOfInterest[] testPoints;
         private String output;
         private int waypointsToMake;
-        private int WaypointsToUse;
+        private int waypointsToUse;
         private int carAmount;
         private bool customPoints;
         private Sorter sorter;
@@ -15,7 +15,7 @@ namespace TouringCars
         {
             this.carAmount = (carAmount != null) ? (int)carAmount : WorkingParams.testCars;
             this.waypointsToMake = (waypointsToMake != null) ? (int)waypointsToMake : WorkingParams.wayPoints;
-            this.WaypointsToUse = (waypointsToUse != null) ? (int)WaypointsToUse : WorkingParams.routePoints;
+            this.waypointsToUse = (waypointsToUse != null) ? (int)waypointsToUse : WorkingParams.routePoints;
             this.testPoints = (testPoints == null) ? createTestPoints() : testPoints;
             this.customPoints = (testPoints == null) ? false : true;
             this.sorter = sorter;
@@ -43,8 +43,8 @@ namespace TouringCars
                 // populating the test route with random points. Each test car gets their own route
                 if (!customPoints)
                 {
-                    PointOfInterest[] carPoints = new PointOfInterest[this.WaypointsToUse];
-                    for (int j = 0; j < this.WaypointsToUse; j++)
+                    PointOfInterest[] carPoints = new PointOfInterest[this.waypointsToUse];
+                    for (int j = 0; j < this.waypointsToUse; j++)
                     {
                         carPoints[j] = this.testPoints[new Random().Next(0, testPoints.Count())];
                     }
