@@ -83,12 +83,15 @@ namespace TouringCars
         {
             return this.cars;
         }
-        public String printSummary()
+        public String printSummaries(int? n = null)
         {
-            foreach (Car car in cars)
+            n = (n == null) ? this.cars.Length : n;
+            int i;
+            for (i = 0; i < n; i++)
             {
-                this.output += car.printSummary(FixedParams.createLogFile);
+                this.output += cars[i].printSummary(FixedParams.createLogFile);
             }
+            output += (i < this.cars.Length) ? $"... limited to {i} out of {this.cars.Length} cars\n" : "";
             return this.output;
 
         }

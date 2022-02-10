@@ -41,6 +41,7 @@ namespace TouringCars
         public static int startingFuel = 25;
         // determines whether to create a log file.
         public static bool createLogFile = true;
+        public static bool createPlots = false;
         // Maximum screen width to occupy
         public static int maxScreenWidth = 90;
         //

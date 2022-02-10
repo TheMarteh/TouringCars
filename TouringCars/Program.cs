@@ -16,7 +16,9 @@ namespace TouringCars
             // Start typing your code here //
 
             // instantiating the route
-            Route tour = new Route(points, useZeroPointAsStart: WorkingParams.useZeroPointAsStart, sorter: Sorter.randomSort);
+            Route tour1 = new Route(points, useZeroPointAsStart: WorkingParams.useZeroPointAsStart, sorter: Sorter.randomSort);
+            Route tour2 = new Route(points, useZeroPointAsStart: WorkingParams.useZeroPointAsStart, sorter: Sorter.no_sorter);
+            Route tour3 = new Route(points, useZeroPointAsStart: WorkingParams.useZeroPointAsStart, sorter: Sorter.bubbleSort);
 
             // setting and running the testcars
             // these are the cars that respond to the variables in Config.cs
@@ -26,16 +28,19 @@ namespace TouringCars
             testcars.go();
 
             // instantiating a single car object with a brand and setting our custom route
-            Car tester = new Car(owner: "Fred", brand: Automerken.Ferrari, route: tour);
-
-            // starting the drive without the owner entering the car will not work.
-            tester.go(); // will not work, as the car first needs to be unlocked
+            Car random_sort_car = new Car(owner: "RandomSort", brand: Automerken.Ferrari, route: tour1);
+            Car no_sort_car = new Car(owner: "NoSort", brand: Automerken.Ferrari, route: tour2);
+            Car bubble_sort_car = new Car(owner: "BubbleSort", brand: Automerken.Ferrari, route: tour3);
 
             // getting in the car to unlock it
-            outputLog += tester.getIn(tester.owner, showOverride: true);
+            outputLog += random_sort_car.getIn(random_sort_car.owner, showOverride: true);
+            outputLog += no_sort_car.getIn(no_sort_car.owner, showOverride: true);
+            outputLog += bubble_sort_car.getIn(bubble_sort_car.owner, showOverride: true);
 
             // starting the car along the route
-            outputLog += tester.go(showOverride: true);
+            outputLog += random_sort_car.go(showOverride: true);
+            outputLog += no_sort_car.go(showOverride: true);
+            outputLog += bubble_sort_car.go(showOverride: true);
 
             // a car can also drive without a route:
             Car driveTillTheSun = new Car(owner: "Pietje");
@@ -48,19 +53,23 @@ namespace TouringCars
             // creating logs
             if (FixedParams.createLogFile)
             {
-                outputLog += "--------------- Log File ----------------\n";
+                outputLog += "      --------------- Log File ---------------\n";
                 // adding cars to analyzer.
-                a.addCars(testcars.getCars());
-                a.addCars(tester);
+                // a.addCars(testcars.getCars());
+                a.addCars(random_sort_car);
+                a.addCars(no_sort_car);
+                a.addCars(bubble_sort_car);
 
                 // Static Analyzer use
                 outputLog += a.plotRoutes();
 
                 // testcar output
-                outputLog += testcars.printSummary();
+                // outputLog += testcars.printSummaries(10);
 
                 // route summaries
-                outputLog += tester.printSummary();
+                outputLog += random_sort_car.printSummary();
+                outputLog += no_sort_car.printSummary();
+                outputLog += bubble_sort_car.printSummary();
                 outputLog += driveTillTheSun.printSummary();
                 outputLog += "\n";
 
