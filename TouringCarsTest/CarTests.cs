@@ -8,7 +8,6 @@ namespace TouringCarsTests
     public class CarTests
     {
         static string name = "Sid";
-        Car auto = new Car(name);
 
         [TestMethod]
         public void CreateNewCarWithOwner()
@@ -71,7 +70,7 @@ namespace TouringCarsTests
         public void distanceLowerMaxDistance()
         {
             Boolean result = true;
-            TesterCars testcars = new TesterCars(carAmount: 10, waypointsToMake: 50, waypointsToUse: 10);
+            TesterCars testcars = new TesterCars(carAmount: 10, waypointsToMake: 50, waypointsToUse: 4);
             testcars.go(showOutput: false);
             foreach (Car carToTest in testcars.getCars())
             {
